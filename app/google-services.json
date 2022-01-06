@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "199910774330",
+    "firebase_url": "https://stayhome-8eabc-default-rtdb.firebaseio.com",
+    "project_id": "stayhome-8eabc",
+    "storage_bucket": "stayhome-8eabc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199910774330:android:09e4cc0ea9292546b84703",
+        "android_client_info": {
+          "package_name": "com.example.stayhome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199910774330-11cn8kpd5818u9qvpggdac6ci1jgc8gk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW2kOoIQKhkAro0XyUefBdRUOQDhX23Lc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199910774330-11cn8kpd5818u9qvpggdac6ci1jgc8gk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
