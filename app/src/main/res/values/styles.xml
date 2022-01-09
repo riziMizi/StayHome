@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:drawableRight">@drawable/ic_dropdown</item>
+        <item name="android:drawablePadding">30dp</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+</resources>

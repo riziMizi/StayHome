@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroupTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="20dp">
+
+        <RadioButton
+            android:id="@+id/radioKupuvac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Купувач"
+            android:textColor="@color/white"
+            android:buttonTint="@color/white"
+            android:checked="true"
+            android:onClick="IzberiTipKorisnik"/>
+        <RadioButton
+            android:id="@+id/radioFirma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Фирма"
+            android:layout_marginLeft="20dp"
+            android:buttonTint="@color/white"
+            android:textColor="@color/white"
+            android:onClick="IzberiTipKorisnik"
+            />
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spinnerTipFirma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/radioGroupTip"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="57dp"
+        android:spinnerMode="dropdown"
+        android:theme="@style/spinnerTheme"
+        android:backgroundTint="@color/white"
+        android:entries="@array/nizaTipFirma"
+        />
+
+
+    <EditText
+        android:id="@+id/editRegisterIme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/ic_person"
+        android:drawablePadding="10dp"
+        android:hint="Име и презиме"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTip" />
+
+    <EditText
+        android:id="@+id/editRegisterTelefon"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/ic_phone"
+        android:drawablePadding="10dp"
+        android:hint="Телефонски број"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/editRegisterIme" />
+
+
+    <EditText
+        android:id="@+id/editRegisterEmail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/ic_email"
+        android:drawablePadding="10dp"
+        android:hint="Е-маил"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/editRegisterTelefon" />
+
+    <EditText
+        android:id="@+id/editRegisterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/ic_password"
+        android:drawablePadding="10dp"
+        android:inputType="textPassword"
+        android:hint="Лозинка"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/editRegisterEmail" />
+
+    <EditText
+        android:id="@+id/editRegisterPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/ic_password"
+        android:drawablePadding="10dp"
+        android:inputType="textPassword"
+        android:hint="Повторете ја лозинката"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/editRegisterPassword" />
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/editRegisterPassword2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Регистрирај се"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:onClick="Register"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

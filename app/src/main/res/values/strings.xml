@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">StayHome</string>
+    <string name="prvaNajavaFirma">Добредојдовте на StayHome апликацијата.
+    Ве молиме внесето го вашето мени и чекајте потврда од админот. Ви благодариме на довербата.к</string>
+
+    <string-array name="nizaTipFirma">
+        <item>Ресторан</item>
+        <item>Lounge bar</item>
+        <item>Fast food</item>
+    </string-array>
 </resources>

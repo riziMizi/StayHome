@@ -72,7 +72,8 @@
         android:background="?android:attr/selectableItemBackground"
         android:layout_marginTop="30dp"
         android:textColor="@color/white"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:onClick="Login"/>
 
     <TextView
         android:id="@+id/txtRegister"
@@ -84,7 +85,8 @@
         android:text="Регистрирај се"
         android:textSize="13dp"
         android:layout_marginRight="30dp"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:onClick="GoToRegister"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
