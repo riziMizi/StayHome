@@ -1,6 +1,7 @@
 package com.example.stayhome;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -25,30 +26,41 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminMeniActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private myAdapterAdmin mAdapter;
+    private myAdapterMeni mAdapter;
 
-    private List<User> list = new ArrayList<>();
+    private List<Meni> list = new ArrayList<>();
+
+    private String FirmaId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_admin_meni);
+
+        Intent intent = getIntent();
+        FirmaId = intent.getStringExtra("FirmaId");
+
+
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
-        NapraviListaPotvrdaFirmi();
+        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaFirma);
+        NapraviListaPotvrdiMeni();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaMeni);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterAdmin(list, R.layout.adapter_admin, this);
+        mAdapter = new myAdapterMeni(list, R.layout.adapter_meni, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -73,7 +85,7 @@ public class AdminActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(AdminActivity.this, MainActivity.class));
+                        startActivity(new Intent(AdminMeniActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -92,26 +104,23 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    private void NapraviListaPotvrdaFirmi() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-        reference.addValueEventListener(new ValueEventListener() {
+    private void NapraviListaPotvrdiMeni() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
+                .child(FirmaId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                   User user = dataSnapshot.getValue(User.class);
-                   user.setFirmaId(dataSnapshot.getKey());
-                   if(user.getPostoiMeni() == 1 && user.getOdobrenoOdAdmin() == 0 && user.getTipUser().equals("Firma")) {
-                       list.add(user);
-                   }
+                    Meni meni = dataSnapshot.getValue(Meni.class);
+                    list.add(meni);
                 }
-
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }

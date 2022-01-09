@@ -24,9 +24,9 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtArtikl = (TextView)itemView.findViewById(R.id.txtMeniArtikl);
-            txtArtiklSostav = (TextView) itemView.findViewById(R.id.txtMeniArtiklSostav);
-            txtArtiklCena = (TextView) itemView.findViewById(R.id.txtMeniArtiklCena);
+            txtArtikl = (TextView)itemView.findViewById(R.id.rwtxtMeniArtikl);
+            txtArtiklSostav = (TextView) itemView.findViewById(R.id.rwtxtMeniArtiklSostav);
+            txtArtiklCena = (TextView) itemView.findViewById(R.id.rwtxtMeniArtiklCena);
         }
     }
 

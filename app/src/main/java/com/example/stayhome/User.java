@@ -9,6 +9,7 @@ public class User {
 
     private int OdobrenoOdAdmin;
     private int PostoiMeni;
+    private String FirmaId;
 
     public User() {
 
@@ -85,5 +86,13 @@ public class User {
 
     public void setPostoiMeni(int postoiMeni) {
         PostoiMeni = postoiMeni;
+    }
+
+    public String getFirmaId() {
+        return FirmaId;
+    }
+
+    public void setFirmaId(String firmaId) {
+        FirmaId = firmaId;
     }
 }
