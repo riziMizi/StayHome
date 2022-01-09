@@ -28,7 +28,8 @@
         android:layout_marginLeft="20dp"
         android:backgroundTint="@color/blue"
         android:text="Мени"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:onClick="OtvoriMeni"/>
 
     <TextView
         android:id="@+id/txtPrvaNajava"

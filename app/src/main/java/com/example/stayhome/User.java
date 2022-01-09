@@ -6,7 +6,9 @@ public class User {
     private String Email;
     private String TipFirma;
     private String TipUser;
+
     private int OdobrenoOdAdmin;
+    private int PostoiMeni;
 
     public User() {
 
@@ -19,13 +21,14 @@ public class User {
         this.TipUser = tipUser;
     }
 
-    public User(String ime, String telefon, String email,String tipUser, String tipFirma, int odobrenoOdAdmin) {
+    public User(String ime, String telefon, String email,String tipUser, String tipFirma, int odobrenoOdAdmin, int postoiMeni) {
         this.Ime = ime;
         this.Telefon = telefon;
         this.Email = email;
         this.TipUser = tipUser;
         this.TipFirma = tipFirma;
         this.OdobrenoOdAdmin = odobrenoOdAdmin;
+        this.PostoiMeni = postoiMeni;
     }
 
     public String getIme() {
@@ -74,5 +77,13 @@ public class User {
 
     public void setOdobrenoOdAdmin(int odobrenoOdAdmin) {
         OdobrenoOdAdmin = odobrenoOdAdmin;
+    }
+
+    public int getPostoiMeni() {
+        return PostoiMeni;
+    }
+
+    public void setPostoiMeni(int postoiMeni) {
+        PostoiMeni = postoiMeni;
     }
 }

@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intentFirma = new Intent(this, FirmaActivity.class);
         Intent intentKupuvac = new Intent(this, KupuvacActivity.class);
+        Intent intentAdmin = new Intent(this, AdminActivity.class);
 
         if(Email.equals("")) {
             editEmail.setError("Задолжително поле!");
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                                     startActivity(intentFirma);
                                 } else if(tip.equals("Kupuvac")) {
                                     startActivity(intentKupuvac);
+                                } else if(tip.equals("Admin")) {
+                                    startActivity(intentAdmin);
                                 }
                             }
                         }

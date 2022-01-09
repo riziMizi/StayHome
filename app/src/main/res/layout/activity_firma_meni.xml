@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirmaMeniActivity"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        app:title="@string/app_name"
+        android:backgroundTint="@color/blue"
+        app:titleTextColor="@color/white"
+        android:theme="@style/AppTheme.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutDodadiMeni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+        <TextView
+            android:id="@+id/txtNapraviMeni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:text="Направи мени"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:textColor="@color/blue"/>
+
+        <EditText
+            android:id="@+id/editMeniArtikl"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_edittext_blue"
+            android:hint="Внесете артикл"
+            android:paddingLeft="10dp"
+            android:textColor="@color/blue"
+            android:textColorHint="@color/blue"
+            app:layout_constraintTop_toBottomOf="@+id/txtNapraviMeni" />
+
+        <EditText
+            android:id="@+id/editMeniArtiklSostav"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_edittext_blue"
+            android:hint="Внесете состав на артиклот"
+            android:paddingLeft="10dp"
+            android:textColor="@color/blue"
+            android:textColorHint="@color/blue"
+            app:layout_constraintTop_toBottomOf="@+id/editMeniArtikl" />
+
+        <EditText
+            android:id="@+id/editMeniArtiklCena"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_edittext_blue"
+            android:hint="Внесете цена на артиклот"
+            android:paddingLeft="10dp"
+            android:textColor="@color/blue"
+            android:textColorHint="@color/blue"
+            app:layout_constraintTop_toBottomOf="@+id/editMeniArtiklSostav" />
+
+        <Button
+            android:id="@+id/buttonDodadiArtikl"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toBottomOf="@id/editMeniArtiklCena"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:backgroundTint="@color/blue"
+            android:text="Додади артикл"
+            android:textColor="@color/white"
+            android:onClick="DodadiArtikl"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listNapraviMeni"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/buttonDodadiArtikl"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"/>
+
+        <Button
+            android:id="@+id/buttonIspratiMeni"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toBottomOf="@id/listNapraviMeni"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:backgroundTint="@color/blue"
+            android:text="Испрати мени"
+            android:textColor="@color/white"
+            android:onClick="IspratiMeni"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMeni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+        <TextView
+            android:id="@+id/txtMeni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:text="Мени"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/txtNepotvrdenoMeni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/txtMeni"
+            android:gravity="center"
+            android:text="Непотврдено"
+            android:textColor="@color/red"
+            android:textSize="12dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listMeni"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/txtNepotvrdenoMeni"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="200dp"
+            android:clipToPadding="false"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

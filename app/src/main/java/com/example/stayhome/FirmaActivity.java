@@ -35,6 +35,7 @@ public class FirmaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ProveriFirmaMeni();
         setContentView(R.layout.activity_firma);
         buttonMeni = (Button) findViewById(R.id.buttonMeni);
         buttonNaracki = (Button) findViewById(R.id.buttonNaracki);
@@ -44,7 +45,6 @@ public class FirmaActivity extends AppCompatActivity {
 
         buttonKomentari.setVisibility(View.INVISIBLE);
         buttonNaracki.setVisibility(View.INVISIBLE);
-        ProveriFirmaMeni();
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
@@ -95,7 +95,6 @@ public class FirmaActivity extends AppCompatActivity {
         String uid = user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
-
         reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,5 +111,10 @@ public class FirmaActivity extends AppCompatActivity {
                 Toast.makeText(FirmaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void OtvoriMeni(View view) {
+        Intent intent = new Intent(this, FirmaMeniActivity.class);
+        startActivity(intent);
     }
 }

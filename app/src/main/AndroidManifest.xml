@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FirmaMeniActivity"
+            android:exported="false"
+            android:parentActivityName=".FirmaActivity" />
+        <activity
             android:name=".KupuvacActivity"
             android:exported="false" />
         <activity
