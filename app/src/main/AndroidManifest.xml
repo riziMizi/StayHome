@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".DodadiArtiklActivity"
+            android:exported="false"
+            android:parentActivityName=".FirmaMeniActivity"/>
+        <activity
             android:name=".AdminMeniActivity"
             android:exported="false"
-            android:parentActivityName=".AdminActivity"/>
+            android:parentActivityName=".AdminActivity" />
         <activity
             android:name=".AdminActivity"
             android:exported="false" />

@@ -82,7 +82,7 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-                builder.setTitle("Потврда фирма");
+                builder.setTitle("Потврди фирма");
                 builder.setMessage("Дали сигурно ја прифаќаш фирмата?");
 
                 builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
@@ -123,7 +123,7 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-                builder.setTitle("Потврда фирма");
+                builder.setTitle("Потврди фирма");
                 builder.setMessage("Дали сигурно ја одбиваш фирмата?");
 
                 builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {

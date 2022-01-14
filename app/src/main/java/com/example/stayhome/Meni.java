@@ -7,6 +7,7 @@ public class Meni {
     private String Artikl;
     private String SostavArtikl;
     private int Cena;
+    private String ArtiklId;
 
     public Meni() {
 
@@ -40,5 +41,13 @@ public class Meni {
 
     public void setSostavArtikl(String sostavArtikl) {
         SostavArtikl = sostavArtikl;
+    }
+
+    public String getArtiklId() {
+        return ArtiklId;
+    }
+
+    public void setArtiklId(String artiklId) {
+        ArtiklId = artiklId;
     }
 }
