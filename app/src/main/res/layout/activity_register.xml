@@ -56,13 +56,73 @@
         android:entries="@array/nizaTipFirma"
         />
 
+    <TextView
+        android:id="@+id/txtRabotnoVreme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTip"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:text="Работно време:"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+
+    <Spinner
+        android:id="@+id/spinnerRabotniDenovi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtRabotnoVreme"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:spinnerMode="dropdown"
+        android:theme="@style/spinnerTheme"
+        android:backgroundTint="@color/white"
+        android:entries="@array/nizaRabotniDenovi"
+        />
+
+    <TextView
+        android:id="@+id/txtSaatOd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtRabotnoVreme"
+        app:layout_constraintLeft_toRightOf="@+id/spinnerRabotniDenovi"
+        android:hint="ОД"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="15dp"
+        android:drawableTop="@drawable/ic_time"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="SelectTime"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/txtSaatDo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtRabotnoVreme"
+        app:layout_constraintLeft_toRightOf="@+id/txtSaatOd"
+        android:hint="ДО"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="15dp"
+        android:drawableTop="@drawable/ic_time"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="SelectTime"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        />
+
 
     <EditText
         android:id="@+id/editRegisterIme"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/ic_person"
@@ -71,14 +131,14 @@
         android:paddingLeft="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupTip" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRabotniDenovi" />
 
     <EditText
         android:id="@+id/editRegisterTelefon"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/ic_phone"
@@ -95,7 +155,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/ic_email"
@@ -111,7 +171,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/ic_password"
@@ -128,7 +188,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/ic_password"
@@ -148,7 +208,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="Регистрирај се"
         android:background="?android:attr/selectableItemBackground"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="15dp"
         android:textColor="@color/white"
         android:textSize="15dp"

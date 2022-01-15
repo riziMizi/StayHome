@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.stayhome">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,9 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".KupuvacMeniActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDqLQ9DR3YH8A35yzK4oGt1xoLyaXIQxuk" />
+
+        <activity
             android:name=".DodadiArtiklActivity"
             android:exported="false"
-            android:parentActivityName=".FirmaMeniActivity"/>
+            android:parentActivityName=".FirmaMeniActivity" />
         <activity
             android:name=".AdminMeniActivity"
             android:exported="false"

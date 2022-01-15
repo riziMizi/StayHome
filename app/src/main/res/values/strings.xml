@@ -8,4 +8,10 @@
         <item>Lounge bar</item>
         <item>Fast food</item>
     </string-array>
+
+    <string-array name="nizaRabotniDenovi">
+        <item>Пон - Пет</item>
+        <item>Пон - Саб</item>
+        <item>Секој ден</item>
+    </string-array>
 </resources>
