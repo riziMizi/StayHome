@@ -8,6 +8,7 @@ public class Meni {
     private String SostavArtikl;
     private int Cena;
     private String ArtiklId;
+    private int Kolicina;
 
     public Meni() {
 
@@ -49,5 +50,13 @@ public class Meni {
 
     public void setArtiklId(String artiklId) {
         ArtiklId = artiklId;
+    }
+
+    public int getKolicina() {
+        return Kolicina;
+    }
+
+    public void setKolicina(int kolicina) {
+        Kolicina = kolicina;
     }
 }

@@ -4,18 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Trace;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,27 +27,43 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+public class NarackaActivity extends AppCompatActivity {
 
-public class AdminMeniActivity extends AppCompatActivity {
+    private TextView txtIznosNaracka, txtNaracka, txtLokacija, txtIzberiLokacija;
+    private EditText editZabeleska;
+    private Button buttonNaracaj;
 
-    private RecyclerView mRecyclerView;
-    private myAdapterMeni mAdapter;
-
-    private List<Meni> list = new ArrayList<>();
+    private int Iznos;
+    private String Naracka;
 
     private String FirmaId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_meni);
+        setContentView(R.layout.activity_naracka);
 
         Intent intent = getIntent();
         FirmaId = intent.getStringExtra("FirmaId");
 
+        Iznos = 0;
+        Naracka = "";
 
+        buttonNaracaj = (Button) findViewById(R.id.buttonNaracaj);
+
+        txtNaracka = (TextView) findViewById(R.id.txtVasaNaracka);
+        txtIznosNaracka = (TextView) findViewById(R.id.txtIznosNaracka);
+        txtLokacija = (TextView) findViewById(R.id.txtLokacija);
+        txtIzberiLokacija = (TextView) findViewById(R.id.txtIzborLokacija);
+
+        editZabeleska = (EditText) findViewById(R.id.editZabeleska);
+
+        buttonNaracaj.setVisibility(View.INVISIBLE);
+        txtLokacija.setVisibility(View.INVISIBLE);
+        txtIzberiLokacija.setVisibility(View.INVISIBLE);
+        editZabeleska.setVisibility(View.INVISIBLE);
+
+        PostaviNaracka();
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
@@ -54,14 +72,6 @@ public class AdminMeniActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        NapraviListaPotvrdiMeni();
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaMeni);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterMeni(list, R.layout.adapter_meni, this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -85,7 +95,7 @@ public class AdminMeniActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(AdminMeniActivity.this, MainActivity.class));
+                        startActivity(new Intent(NarackaActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -99,29 +109,49 @@ public class AdminMeniActivity extends AppCompatActivity {
                 });
                 AlertDialog alert = builder.create();
                 alert.show();
+            case android.R.id.home:
+                Intent intent = new Intent();
+                intent.putExtra("FirmaId", FirmaId);
+                setResult(RESULT_OK, intent);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void NapraviListaPotvrdiMeni() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
-                .child(FirmaId);
-        reference.addValueEventListener(new ValueEventListener() {
+    private void PostaviNaracka() {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Naracki")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Meni meni = dataSnapshot.getValue(Meni.class);
-                    list.add(meni);
+                Naracka = "";
+                Iznos = 0;
+                if(snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Meni meni = dataSnapshot.getValue(Meni.class);
+                        Naracka += String.valueOf(meni.getKolicina()) + "  " + meni.getArtikl() + "\n";
+                        Iznos += meni.getKolicina() * meni.getCena();
+                    }
+                    txtNaracka.setText(Naracka);
+                    txtIznosNaracka.setText("Вкупен износ: " + String.valueOf(Iznos) + " ден.");
                 }
-                mAdapter.notifyDataSetChanged();
+                if(!txtNaracka.getText().toString().trim().equals("")) {
+                    buttonNaracaj.setVisibility(View.VISIBLE);
+                    txtLokacija.setVisibility(View.VISIBLE);
+                    txtIzberiLokacija.setVisibility(View.VISIBLE);
+                    editZabeleska.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public void SelectLocation(View view) {
     }
 }

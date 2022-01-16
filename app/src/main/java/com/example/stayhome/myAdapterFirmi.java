@@ -1,6 +1,7 @@
 package com.example.stayhome;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,15 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
                 user.getVremeOd() + "-" + user.getVremeDo());
 
         viewHolder.txtMeni.setPaintFlags(viewHolder.txtMeni.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        viewHolder.txtMeni.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,KupuvacMeniActivity.class);
+                intent.putExtra("FirmaId", user.getFirmaId());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

@@ -42,6 +42,7 @@ public class KupuvacActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
         NapraviLista();
+        IzbrisiNaracki();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listFirmi);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -112,5 +113,10 @@ public class KupuvacActivity extends AppCompatActivity {
                 Toast.makeText(KupuvacActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void IzbrisiNaracki() {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Naracki");
+        firebaseDatabase.removeValue();
     }
 }
