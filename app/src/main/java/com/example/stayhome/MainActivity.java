@@ -24,6 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtRegister;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         txtRegister = (TextView) findViewById(R.id.txtRegister);
         txtRegister.setPaintFlags(txtRegister.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
     }
 
     public void GoToRegister(View view) {

@@ -1,6 +1,7 @@
 package com.example.stayhome;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,12 +21,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 public class NarackaActivity extends AppCompatActivity {
 
@@ -37,6 +46,11 @@ public class NarackaActivity extends AppCompatActivity {
     private String Naracka;
 
     private String FirmaId = "";
+
+    private static final int REQ_CODE = 123;
+
+    private double Lat,Log = 0;
+    private String Address = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +133,20 @@ public class NarackaActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(data != null) {
+            if (requestCode == REQ_CODE) {
+                Lat = data.getDoubleExtra("latitude", 0);
+                Log = data.getDoubleExtra("longitude", 0);
+                Address = data.getStringExtra("address");
+                txtIzberiLokacija.setText(Address);
+            }
+        }
+    }
+
     private void PostaviNaracka() {
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Naracki")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -153,5 +181,61 @@ public class NarackaActivity extends AppCompatActivity {
     }
 
     public void SelectLocation(View view) {
+        Intent intent = new Intent(this, GoogleMapActivity.class);
+        startActivityForResult(intent, REQ_CODE);
+    }
+
+    public void IspratiNaracka(View view) {
+        String Adresa = txtIzberiLokacija.getText().toString().trim();
+        String Zabeleska = editZabeleska.getText().toString().trim();
+        String Naracka = txtNaracka.getText().toString().trim();
+        SimpleDateFormat formatter= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = new Date(System.currentTimeMillis());
+        String Datum = formatter.format(date);
+        Intent intent = new Intent(this, KupuvacAktivniNaracki.class);
+
+        final String[] Telefon = {""};
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User korisnik = snapshot.getValue(User.class);
+                Telefon[0] = korisnik.getTelefon();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        if(Adresa.equals("")) {
+            txtIzberiLokacija.setError("Задолжително поле!");
+            txtIzberiLokacija.requestFocus();
+            return;
+        } else {
+            txtIzberiLokacija.setError(null);
+        }
+
+        Naracka naracka = new Naracka(Adresa, Telefon[0], Iznos, FirmaId, Zabeleska, Log, Lat, 0, "", uid, Naracka, Datum);
+
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("AktivniNaracki")
+                .child(UUID.randomUUID().toString());
+        firebaseDatabase.setValue(naracka).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(NarackaActivity.this, "Успешно ја испративте нарачката!!", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

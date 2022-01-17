@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KupuvacActivity"
+    tools:context=".KupuvacAktivniNaracki"
     android:background="@color/white">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,29 +18,27 @@
         app:titleTextColor="@color/white"
         android:theme="@style/AppTheme.ActionBar"/>
 
-    <Button
-        android:id="@+id/buttonVasiNaracki"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <TextView
+        android:id="@+id/txtVasiNaracki"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/my_toolbar"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:backgroundTint="@color/blue"
+        android:layout_marginTop="30dp"
         android:text="Ваши нарачки"
-        android:textColor="@color/white"
-        android:onClick="AktivniNaracki"/>
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="@color/blue"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listFirmi"
+        android:id="@+id/listKupuvacAktivniNaracki"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/buttonVasiNaracki"
-        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtVasiNaracki"
+        android:layout_marginTop="20dp"
         android:paddingBottom="200dp"
         android:clipToPadding="false"/>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

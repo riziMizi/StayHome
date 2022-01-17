@@ -39,7 +39,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:textStyle="bold"
         android:textColor="@color/blue"
-        android:textSize="15dp"
+        android:textSize="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"/>
 
@@ -109,7 +109,8 @@
         android:layout_marginLeft="20dp"
         android:backgroundTint="@color/blue"
         android:text="Нарачај"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:onClick="IspratiNaracka"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

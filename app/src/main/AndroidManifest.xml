@@ -15,9 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
-            android:name=".NarackaActivity"
+            android:name=".KupuvacAktivniNaracki"
             android:exported="false"
-            />
+            android:parentActivityName=".KupuvacActivity"/>
+        <activity
+            android:name=".GoogleMapActivity"
+            android:exported="false">
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyDqLQ9DR3YH8A35yzK4oGt1xoLyaXIQxuk" />
+        </activity>
+        <activity
+            android:name=".NarackaActivity"
+            android:exported="false" />
         <activity
             android:name=".KupuvacMeniActivity"
             android:exported="false"
