@@ -55,7 +55,8 @@
         android:layout_marginLeft="20dp"
         android:backgroundTint="@color/blue"
         android:text="Нарачки"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:onClick="OtvoriNaracki"/>
 
     <Button
         android:id="@+id/buttonKomentari"

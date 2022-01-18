@@ -7,6 +7,11 @@
         <item name="android:drawablePadding">30dp</item>
     </style>
 
+    <style name="spinnerTheme2">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionMenuTextColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>

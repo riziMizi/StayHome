@@ -117,4 +117,9 @@ public class FirmaActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FirmaMeniActivity.class);
         startActivity(intent);
     }
+
+    public void OtvoriNaracki(View view) {
+        Intent intent = new Intent(this, FirmaNarackiActivity.class);
+        startActivity(intent);
+    }
 }

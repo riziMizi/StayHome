@@ -2,26 +2,26 @@ package com.example.stayhome;
 
 public class Naracka {
     private String Adresa;
-    private String Telefon;
     private int Cena;
     private String FirmaId;
     private double Longitude;
     private double Latitude;
     private String Zabeleska;
-    private int PrifatenaNaracka;
+    private String PrifatenaNaracka;
     private String VremeDostava;
     private String KupuvacId;
     private String NarackaHrana;
     private String Datum;
+    private String NarackaId;
 
     public Naracka() {
 
     }
 
-    public Naracka(String adresa, String telefon, int cena, String firmaId, String zabeleska, double longitude,
-                   double latitude, int prifatenaNaracka, String vremeDostava, String kupuvacId, String narackaHrana, String datum) {
+    public Naracka(String adresa, int cena, String firmaId, String zabeleska, double longitude,
+                   double latitude, String prifatenaNaracka, String vremeDostava, String kupuvacId, String narackaHrana,
+                   String datum) {
         this.Adresa = adresa;
-        this.Telefon = telefon;
         this.Cena = cena;
         this.FirmaId = firmaId;
         this.Zabeleska = zabeleska;
@@ -40,14 +40,6 @@ public class Naracka {
 
     public void setAdresa(String adresa) {
         Adresa = adresa;
-    }
-
-    public String getTelefon() {
-        return Telefon;
-    }
-
-    public void setTelefon(String telefon) {
-        Telefon = telefon;
     }
 
     public int getCena() {
@@ -90,14 +82,6 @@ public class Naracka {
         Zabeleska = zabeleska;
     }
 
-    public int getPrifatenaNaracka() {
-        return PrifatenaNaracka;
-    }
-
-    public void setPrifatenaNaracka(int prifatenaNaracka) {
-        PrifatenaNaracka = prifatenaNaracka;
-    }
-
     public String getVremeDostava() {
         return VremeDostava;
     }
@@ -128,5 +112,21 @@ public class Naracka {
 
     public void setDatum(String datum) {
         Datum = datum;
+    }
+
+    public String getPrifatenaNaracka() {
+        return PrifatenaNaracka;
+    }
+
+    public void setPrifatenaNaracka(String prifatenaNaracka) {
+        PrifatenaNaracka = prifatenaNaracka;
+    }
+
+    public String getNarackaId() {
+        return NarackaId;
+    }
+
+    public void setNarackaId(String narackaId) {
+        NarackaId = narackaId;
     }
 }

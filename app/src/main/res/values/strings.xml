@@ -14,4 +14,9 @@
         <item>Пон - Саб</item>
         <item>Секој ден</item>
     </string-array>
+
+    <string-array name="nizaNaracki">
+        <item>За потврда</item>
+        <item>Активни</item>
+    </string-array>
 </resources>

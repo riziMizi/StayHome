@@ -81,7 +81,7 @@ public class myAdapterKupuvacNaracki extends RecyclerView.Adapter<myAdapterKupuv
 
         viewHolder.txtNaracka.setText(naracka.getNarackaHrana());
         viewHolder.txtIznos.setText("Вкупен износ: " + naracka.getCena() + " ден.");
-        if(naracka.getPrifatenaNaracka() == 0) {
+        if(naracka.getPrifatenaNaracka().equals("За потврда")) {
             viewHolder.txtPotvrdenaNaracka.setText("На чекање");
         } else {
             viewHolder.txtPotvrdenaNaracka.setText("Време за достава: " + naracka.getVremeDostava() + " мин.");

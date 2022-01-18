@@ -15,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".FirmaNarackiActivity"
+            android:exported="false"
+            android:parentActivityName=".FirmaActivity"/>
+        <activity
             android:name=".KupuvacAktivniNaracki"
             android:exported="false"
-            android:parentActivityName=".KupuvacActivity"/>
+            android:parentActivityName=".KupuvacActivity" />
         <activity
             android:name=".GoogleMapActivity"
             android:exported="false">
@@ -32,6 +36,10 @@
             android:name=".KupuvacMeniActivity"
             android:exported="false"
             android:parentActivityName=".KupuvacActivity" />
+
+        <activity
+            android:name=".ShowGoogleMapActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.version"

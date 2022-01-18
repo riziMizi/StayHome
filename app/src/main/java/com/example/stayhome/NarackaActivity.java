@@ -194,25 +194,8 @@ public class NarackaActivity extends AppCompatActivity {
         String Datum = formatter.format(date);
         Intent intent = new Intent(this, KupuvacAktivniNaracki.class);
 
-        final String[] Telefon = {""};
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-
-        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User korisnik = snapshot.getValue(User.class);
-                Telefon[0] = korisnik.getTelefon();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         if(Adresa.equals("")) {
             txtIzberiLokacija.setError("Задолжително поле!");
@@ -222,7 +205,7 @@ public class NarackaActivity extends AppCompatActivity {
             txtIzberiLokacija.setError(null);
         }
 
-        Naracka naracka = new Naracka(Adresa, Telefon[0], Iznos, FirmaId, Zabeleska, Log, Lat, 0, "", uid, Naracka, Datum);
+        Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum);
 
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("AktivniNaracki")
                 .child(UUID.randomUUID().toString());
