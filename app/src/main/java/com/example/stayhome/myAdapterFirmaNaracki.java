@@ -140,20 +140,25 @@ public class myAdapterFirmaNaracki extends RecyclerView.Adapter<myAdapterFirmaNa
 
                     alert.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Поднеси</font>"), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Map<String, Object> map = new HashMap();
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
-                            map.put(naracka.getNarackaId() + "/vremeDostava", minuti.getText().toString().trim());
-                            map.put(naracka.getNarackaId() + "/prifatenaNaracka", "Активни");
-                            databaseReference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(mContext, "Успешно прифатена нарачка!!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                            if(minuti.getText().toString().equals("")){
+                                Toast.makeText(mContext, "При прифаќање на нарачката мора да се внесе време за достава!", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Map<String, Object> map = new HashMap();
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
+                                map.put(naracka.getNarackaId() + "/vremeDostava", minuti.getText().toString().trim());
+                                map.put(naracka.getNarackaId() + "/prifatenaNaracka", "Активни");
+                                databaseReference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(mContext, "Успешно прифатена нарачка!!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
 
                             dialog.dismiss();
                         }

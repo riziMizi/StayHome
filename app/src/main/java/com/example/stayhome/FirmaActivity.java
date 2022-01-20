@@ -122,4 +122,9 @@ public class FirmaActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FirmaNarackiActivity.class);
         startActivity(intent);
     }
+
+    public void OtvoriKomentari(View view) {
+        Intent intent = new Intent(this, KomentariFirmaActivity.class);
+        startActivity(intent);
+    }
 }

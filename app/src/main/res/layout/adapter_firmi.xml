@@ -14,6 +14,26 @@
         android:background="@color/white">
 
         <TextView
+            android:id="@+id/rw2Komentari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:drawableTop="@drawable/ic_comment" />
+
+        <TextView
+            android:id="@+id/rw2Ocena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintRight_toLeftOf="@+id/rw2Komentari"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="15dp"
+            android:drawableTop="@drawable/ic_rate" />
+
+        <TextView
             android:id="@+id/rw2txtImeFirma"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

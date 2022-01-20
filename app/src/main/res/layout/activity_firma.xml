@@ -68,7 +68,8 @@
         android:layout_marginLeft="20dp"
         android:backgroundTint="@color/blue"
         android:text="Коментари"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:onClick="OtvoriKomentari"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

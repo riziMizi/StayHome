@@ -7,7 +7,9 @@
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/border_button.xml" value="0.2703125" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/border_edittext.xml" value="0.2703125" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/border_edittext_blue.xml" value="0.2703125" />
+        <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_comment.xml" value="0.21851851851851853" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_location.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_rate.xml" value="0.21851851851851853" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_shooping.xml" value="0.2703125" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/drawable/my_button_bg.xml" value="0.2703125" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_admin.xml" value="0.25416666666666665" />
@@ -17,6 +19,8 @@
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_firma_meni.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_firma_naracki.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_google_map.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_komentari.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_komentari_firma.xml" value="0.17291666666666666" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac_aktivni_naracki.xml" value="0.10625" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac_meni.xml" value="0.21532846715328466" />
@@ -26,6 +30,7 @@
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_admin.xml" value="0.176" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_firma_naracki.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_firmi.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_komentari.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_kupuvac_naracki.xml" value="0.10625" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_meni.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_meni_naracka.xml" value="0.22014925373134328" />

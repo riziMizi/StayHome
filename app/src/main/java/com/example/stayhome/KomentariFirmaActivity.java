@@ -16,10 +16,10 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,17 +29,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KupuvacAktivniNaracki extends AppCompatActivity {
+public class KomentariFirmaActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private myAdapterKupuvacNaracki mAdapter;
+    private myAdapterKomentari mAdapter;
 
-    private List<Naracka> list = new ArrayList<>();
+    private List<Komentar> list = new ArrayList<>();
+
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kupuvac_aktivni_naracki);
+        setContentView(R.layout.activity_komentari_firma);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
@@ -49,12 +51,15 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        NapraviLista();
+        ratingBar = findViewById(R.id.ratinBarFirma);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.listKupuvacAktivniNaracki);
+        NapraviLista();
+        PresmetajOcena();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.listKomentariFirma);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterKupuvacNaracki(list, R.layout.adapter_kupuvac_naracki, this);
+        mAdapter = new myAdapterKomentari(list, R.layout.adapter_komentari, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -79,7 +84,7 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(KupuvacAktivniNaracki.this, MainActivity.class));
+                        startActivity(new Intent(KomentariFirmaActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -99,9 +104,7 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
     }
 
     private void NapraviLista() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Komentari");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,9 +112,9 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
                 list.clear();
                 if(snapshot.exists()) {
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Naracka naracka = dataSnapshot.getValue(Naracka.class);
-                        if(naracka.getKupuvacId().equals(uid)) {
-                            list.add(naracka);
+                        Komentar komentar = dataSnapshot.getValue(Komentar.class);
+                        if(komentar.getFirmaId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            list.add(komentar);
                         }
                     }
                 }
@@ -120,8 +123,34 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(KupuvacAktivniNaracki.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(KomentariFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void PresmetajOcena() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").
+                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                int ZbirOceni = user.getZbirOceni();
+                int VkupnoOceni = user.getVkupnoOceni();
+
+                if(VkupnoOceni != 0) {
+                    float Ocena = (float) ZbirOceni / VkupnoOceni;
+                    ratingBar.setRating(Ocena);
+                } else {
+                    ratingBar.setRating(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(KomentariFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
