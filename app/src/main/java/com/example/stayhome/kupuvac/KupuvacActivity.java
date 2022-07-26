@@ -1,7 +1,6 @@
-package com.example.stayhome;
+package com.example.stayhome.kupuvac;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,8 +15,12 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,39 +31,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminMeniActivity extends AppCompatActivity {
+public class KupuvacActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private myAdapterMeni mAdapter;
+    private myAdapterFirmi mAdapter;
 
-    private List<Meni> list = new ArrayList<>();
-
-    private String FirmaId = "";
+    private List<User> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_meni);
-
-        Intent intent = getIntent();
-        FirmaId = intent.getStringExtra("FirmaId");
-
-
+        setContentView(R.layout.activity_kupuvac);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
-        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        NapraviLista();
+        IzbrisiNaracki();
 
-        NapraviListaPotvrdiMeni();
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaMeni);
+        mRecyclerView = (RecyclerView) findViewById(R.id.listFirmi);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterMeni(list, R.layout.adapter_meni, this);
+        mAdapter = new myAdapterFirmi(list, R.layout.adapter_firmi, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -85,7 +76,7 @@ public class AdminMeniActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(AdminMeniActivity.this, MainActivity.class));
+                        startActivity(new Intent(KupuvacActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -104,24 +95,37 @@ public class AdminMeniActivity extends AppCompatActivity {
         }
     }
 
-    private void NapraviListaPotvrdiMeni() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
-                .child(FirmaId);
+    private void NapraviLista() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Meni meni = dataSnapshot.getValue(Meni.class);
-                    list.add(meni);
+                    User user = dataSnapshot.getValue(User.class);
+                    user.setFirmaId(dataSnapshot.getKey());
+                    if(user.getTipUser().equals("Firma") && user.getOdobrenoOdAdmin() == 1) {
+                        list.add(user);
+                    }
                 }
+
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(KupuvacActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void IzbrisiNaracki() {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Naracki");
+        firebaseDatabase.removeValue();
+    }
+
+    public void AktivniNaracki(View view) {
+        Intent intent = new Intent(this, KupuvacAktivniNaracki.class);
+        startActivity(intent);
     }
 }

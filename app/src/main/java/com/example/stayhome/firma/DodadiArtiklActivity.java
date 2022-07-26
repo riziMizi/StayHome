@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.firma;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,6 +17,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.Meni;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

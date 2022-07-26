@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.classes;
 
 public class Komentar {
     private String ImeKupuvac;

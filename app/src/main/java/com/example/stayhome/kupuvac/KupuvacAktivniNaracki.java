@@ -1,6 +1,7 @@
-package com.example.stayhome;
+package com.example.stayhome.kupuvac;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -17,7 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.Naracka;
+import com.example.stayhome.kupuvac.naracka.myAdapterKupuvacNaracki;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,30 +31,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
+public class KupuvacAktivniNaracki extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private myAdapterAdmin mAdapter;
+    private myAdapterKupuvacNaracki mAdapter;
 
-    private List<User> list = new ArrayList<>();
+    private List<Naracka> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_kupuvac_aktivni_naracki);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
-        NapraviListaPotvrdaFirmi();
+        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaFirma);
+        NapraviLista();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.listKupuvacAktivniNaracki);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterAdmin(list, R.layout.adapter_admin, this);
+        mAdapter = new myAdapterKupuvacNaracki(list, R.layout.adapter_kupuvac_naracki, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -73,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(AdminActivity.this, MainActivity.class));
+                        startActivity(new Intent(KupuvacAktivniNaracki.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -92,26 +102,29 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    private void NapraviListaPotvrdaFirmi() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+    private void NapraviLista() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                   User user = dataSnapshot.getValue(User.class);
-                   user.setFirmaId(dataSnapshot.getKey());
-                   if(user.getPostoiMeni() == 1 && user.getOdobrenoOdAdmin() == 0 && user.getTipUser().equals("Firma")) {
-                       list.add(user);
-                   }
+                if(snapshot.exists()) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Naracka naracka = dataSnapshot.getValue(Naracka.class);
+                        if(naracka.getKupuvacId().equals(uid)) {
+                            list.add(naracka);
+                        }
+                    }
                 }
-
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(KupuvacAktivniNaracki.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }

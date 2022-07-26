@@ -1,21 +1,22 @@
-package com.example.stayhome;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+package com.example.stayhome.googleMap;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.example.stayhome.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,7 +31,8 @@ import com.google.android.gms.tasks.Task;
 import java.util.List;
 import java.util.Locale;
 
-public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ShowGoogleMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -45,14 +47,6 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
             }
             mMap.setMyLocationEnabled(true);
 
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    selectedLat = latLng.latitude;
-                    selectedLng = latLng.longitude;
-                    GetAddress(selectedLat, selectedLng);
-                }
-            });
         }
     }
 
@@ -71,10 +65,25 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
     private List<Address> addresses;
     private String selectedAddress;
 
+    private double lat = 0;
+    private double lon = 0;
+
+    private TextView textView;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
+
+        Intent intent = getIntent();
+
+        lat = intent.getDoubleExtra("lat", 0);
+        lon = intent.getDoubleExtra("lon", 0);
+
+        textView = (TextView) findViewById(R.id.txtIzberiLokacijaMaps);
+        textView.setVisibility(View.INVISIBLE);
 
         getLocationPermission();
     }
@@ -91,15 +100,9 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()){
-                            Location currentLocation = (Location) task.getResult();
-
-                            selectedLat = currentLocation.getLatitude();
-                            selectedLng = currentLocation.getLongitude();
-
-                            GetAddress(selectedLat, selectedLng);
-
+                            GetAddress(lat, lon);
                         }else{
-                            Toast.makeText(GoogleMapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ShowGoogleMapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -111,8 +114,7 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void initMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-        mapFragment.getMapAsync(GoogleMapActivity.this);
+        mapFragment.getMapAsync(ShowGoogleMapActivity.this);
     }
 
     private void getLocationPermission(){
@@ -189,16 +191,5 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
         } else {
             Toast.makeText(this, "LatLng null!", Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void SelectLocation(View view) {
-        Intent intent = new Intent();
-        intent.putExtra("latitude", selectedLat);
-        intent.putExtra("longitude", selectedLng);
-        intent.putExtra("address", selectedAddress);
-        setResult(RESULT_OK, intent);
-
-        finish();
-
     }
 }

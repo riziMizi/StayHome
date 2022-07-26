@@ -1,11 +1,8 @@
-package com.example.stayhome;
+package com.example.stayhome.firma;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,40 +13,43 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.User;
+import com.example.stayhome.firma.naracki.FirmaNarackiActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+public class FirmaActivity extends AppCompatActivity {
 
-public class KupuvacActivity extends AppCompatActivity {
-
-    private RecyclerView mRecyclerView;
-    private myAdapterFirmi mAdapter;
-
-    private List<User> list = new ArrayList<>();
+    private Button buttonMeni, buttonNaracki, buttonKomentari;
+    private TextView txtPrvaNajava;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kupuvac);
+        ProveriFirmaMeni();
+        setContentView(R.layout.activity_firma);
+        buttonMeni = (Button) findViewById(R.id.buttonMeni);
+        buttonNaracki = (Button) findViewById(R.id.buttonNaracki);
+        buttonKomentari = (Button) findViewById(R.id.buttonKomentari);
+
+        txtPrvaNajava = (TextView) findViewById(R.id.txtPrvaNajava);
+
+        buttonKomentari.setVisibility(View.INVISIBLE);
+        buttonNaracki.setVisibility(View.INVISIBLE);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
-        NapraviLista();
-        IzbrisiNaracki();
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.listFirmi);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterFirmi(list, R.layout.adapter_firmi, this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class KupuvacActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(KupuvacActivity.this, MainActivity.class));
+                        startActivity(new Intent(FirmaActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -92,37 +92,41 @@ public class KupuvacActivity extends AppCompatActivity {
         }
     }
 
-    private void NapraviLista() {
+    private void ProveriFirmaMeni() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.addValueEventListener(new ValueEventListener() {
+
+        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    user.setFirmaId(dataSnapshot.getKey());
-                    if(user.getTipUser().equals("Firma") && user.getOdobrenoOdAdmin() == 1) {
-                        list.add(user);
-                    }
+                User korisnik = snapshot.getValue(User.class);
+                if(korisnik.getOdobrenoOdAdmin() == 1) {
+                    buttonKomentari.setVisibility(View.VISIBLE);
+                    buttonNaracki.setVisibility(View.VISIBLE);
+                    txtPrvaNajava.setVisibility(View.INVISIBLE);
                 }
-
-                mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(KupuvacActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FirmaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void IzbrisiNaracki() {
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Naracki");
-        firebaseDatabase.removeValue();
+    public void OtvoriMeni(View view) {
+        Intent intent = new Intent(this, FirmaMeniActivity.class);
+        startActivity(intent);
     }
 
-    public void AktivniNaracki(View view) {
-        Intent intent = new Intent(this, KupuvacAktivniNaracki.class);
+    public void OtvoriNaracki(View view) {
+        Intent intent = new Intent(this, FirmaNarackiActivity.class);
+        startActivity(intent);
+    }
+
+    public void OtvoriKomentari(View view) {
+        Intent intent = new Intent(this, KomentariFirmaActivity.class);
         startActivity(intent);
     }
 }

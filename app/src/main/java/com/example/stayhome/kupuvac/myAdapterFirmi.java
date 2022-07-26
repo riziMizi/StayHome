@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.kupuvac;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.stayhome.R;
+import com.example.stayhome.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,7 +110,7 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
         viewHolder.txtMeni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,KupuvacMeniActivity.class);
+                Intent intent = new Intent(mContext, KupuvacMeniActivity.class);
                 intent.putExtra("FirmaId", user.getFirmaId());
                 mContext.startActivity(intent);
             }
@@ -118,7 +119,7 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
         viewHolder.txtKomentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,KomentariActivity.class);
+                Intent intent = new Intent(mContext, KomentariActivity.class);
                 intent.putExtra("FirmaId", user.getFirmaId());
                 intent.putExtra("FirmaIme", user.getIme());
                 mContext.startActivity(intent);

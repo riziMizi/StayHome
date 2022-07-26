@@ -1,8 +1,12 @@
-package com.example.stayhome;
+package com.example.stayhome.admin;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,42 +16,56 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.Meni;
+import com.example.stayhome.myAdapterMeni;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.PrimitiveIterator;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FirmaActivity extends AppCompatActivity {
+public class AdminMeniActivity extends AppCompatActivity {
 
-    private Button buttonMeni, buttonNaracki, buttonKomentari;
-    private TextView txtPrvaNajava;
+    private RecyclerView mRecyclerView;
+    private myAdapterMeni mAdapter;
+
+    private List<Meni> list = new ArrayList<>();
+
+    private String FirmaId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProveriFirmaMeni();
-        setContentView(R.layout.activity_firma);
-        buttonMeni = (Button) findViewById(R.id.buttonMeni);
-        buttonNaracki = (Button) findViewById(R.id.buttonNaracki);
-        buttonKomentari = (Button) findViewById(R.id.buttonKomentari);
+        setContentView(R.layout.activity_admin_meni);
 
-        txtPrvaNajava = (TextView) findViewById(R.id.txtPrvaNajava);
+        Intent intent = getIntent();
+        FirmaId = intent.getStringExtra("FirmaId");
 
-        buttonKomentari.setVisibility(View.INVISIBLE);
-        buttonNaracki.setVisibility(View.INVISIBLE);
+
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
+        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        NapraviListaPotvrdiMeni();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaMeni);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new myAdapterMeni(list, R.layout.adapter_meni, this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -71,7 +89,7 @@ public class FirmaActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(FirmaActivity.this, MainActivity.class));
+                        startActivity(new Intent(AdminMeniActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -90,41 +108,24 @@ public class FirmaActivity extends AppCompatActivity {
         }
     }
 
-    private void ProveriFirmaMeni() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-
-        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void NapraviListaPotvrdiMeni() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
+                .child(FirmaId);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User korisnik = snapshot.getValue(User.class);
-                if(korisnik.getOdobrenoOdAdmin() == 1) {
-                    buttonKomentari.setVisibility(View.VISIBLE);
-                    buttonNaracki.setVisibility(View.VISIBLE);
-                    txtPrvaNajava.setVisibility(View.INVISIBLE);
+                list.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Meni meni = dataSnapshot.getValue(Meni.class);
+                    list.add(meni);
                 }
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(FirmaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void OtvoriMeni(View view) {
-        Intent intent = new Intent(this, FirmaMeniActivity.class);
-        startActivity(intent);
-    }
-
-    public void OtvoriNaracki(View view) {
-        Intent intent = new Intent(this, FirmaNarackiActivity.class);
-        startActivity(intent);
-    }
-
-    public void OtvoriKomentari(View view) {
-        Intent intent = new Intent(this, KomentariFirmaActivity.class);
-        startActivity(intent);
     }
 }

@@ -15,37 +15,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
-            android:name=".KomentariFirmaActivity"
+            android:name=".firma.KomentariFirmaActivity"
             android:exported="false"
-            android:parentActivityName=".FirmaActivity"/>
+            android:parentActivityName=".firma.FirmaActivity"/>
         <activity
-            android:name=".KomentariActivity"
+            android:name=".kupuvac.KomentariActivity"
             android:exported="false"
-            android:parentActivityName=".KupuvacActivity" />
+            android:parentActivityName=".kupuvac.KupuvacActivity" />
         <activity
-            android:name=".FirmaNarackiActivity"
+            android:name=".firma.naracki.FirmaNarackiActivity"
             android:exported="false"
-            android:parentActivityName=".FirmaActivity" />
+            android:parentActivityName=".firma.FirmaActivity" />
         <activity
-            android:name=".KupuvacAktivniNaracki"
+            android:name=".kupuvac.KupuvacAktivniNaracki"
             android:exported="false"
-            android:parentActivityName=".KupuvacActivity" />
+            android:parentActivityName=".kupuvac.KupuvacActivity" />
         <activity
-            android:name=".GoogleMapActivity"
+            android:name=".googleMap.GoogleMapActivity"
             android:exported="false">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyDqLQ9DR3YH8A35yzK4oGt1xoLyaXIQxuk" />
         </activity>
         <activity
-            android:name=".NarackaActivity"
+            android:name=".kupuvac.naracka.NarackaActivity"
             android:exported="false" />
         <activity
-            android:name=".KupuvacMeniActivity"
+            android:name=".kupuvac.KupuvacMeniActivity"
             android:exported="false"
-            android:parentActivityName=".KupuvacActivity" />
+            android:parentActivityName=".kupuvac.KupuvacActivity" />
         <activity
-            android:name=".ShowGoogleMapActivity"
+            android:name=".googleMap.ShowGoogleMapActivity"
             android:exported="false" />
 
         <meta-data
@@ -56,25 +56,25 @@
             android:value="AIzaSyDqLQ9DR3YH8A35yzK4oGt1xoLyaXIQxuk" />
 
         <activity
-            android:name=".DodadiArtiklActivity"
+            android:name=".firma.DodadiArtiklActivity"
             android:exported="false"
-            android:parentActivityName=".FirmaMeniActivity" />
+            android:parentActivityName=".firma.FirmaMeniActivity" />
         <activity
-            android:name=".AdminMeniActivity"
+            android:name=".admin.AdminMeniActivity"
             android:exported="false"
-            android:parentActivityName=".AdminActivity" />
+            android:parentActivityName=".admin.AdminActivity" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".admin.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".FirmaMeniActivity"
+            android:name=".firma.FirmaMeniActivity"
             android:exported="false"
-            android:parentActivityName=".FirmaActivity" />
+            android:parentActivityName=".firma.FirmaActivity" />
         <activity
-            android:name=".KupuvacActivity"
+            android:name=".kupuvac.KupuvacActivity"
             android:exported="false" />
         <activity
-            android:name=".FirmaActivity"
+            android:name=".firma.FirmaActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

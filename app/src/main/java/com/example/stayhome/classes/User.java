@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.classes;
 
 public class User {
     private String Ime;

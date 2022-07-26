@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.kupuvac.naracka;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Trace;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.stayhome.MainActivity;
+import com.example.stayhome.R;
+import com.example.stayhome.classes.Meni;
+import com.example.stayhome.classes.Naracka;
+import com.example.stayhome.googleMap.GoogleMapActivity;
+import com.example.stayhome.kupuvac.KupuvacAktivniNaracki;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +37,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -205,7 +209,7 @@ public class NarackaActivity extends AppCompatActivity {
             txtIzberiLokacija.setError(null);
         }
 
-        Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum);
+        com.example.stayhome.classes.Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum);
 
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("AktivniNaracki")
                 .child(UUID.randomUUID().toString());

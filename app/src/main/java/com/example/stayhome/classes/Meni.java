@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.classes;
 
 import java.util.ArrayList;
 import java.util.List;

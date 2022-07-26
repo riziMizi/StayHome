@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.firma.naracki;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,17 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.stayhome.R;
+import com.example.stayhome.classes.Naracka;
+import com.example.stayhome.classes.User;
+import com.example.stayhome.googleMap.ShowGoogleMapActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

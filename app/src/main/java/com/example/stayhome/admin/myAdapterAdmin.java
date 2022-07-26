@@ -1,4 +1,4 @@
-package com.example.stayhome;
+package com.example.stayhome.admin;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,9 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.stayhome.R;
+import com.example.stayhome.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -71,7 +72,7 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
         viewHolder.txtVidiMeni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,AdminMeniActivity.class);
+                Intent intent = new Intent(mContext, AdminMeniActivity.class);
                 intent.putExtra("FirmaId", user.getFirmaId());
                 mContext.startActivity(intent);
             }
