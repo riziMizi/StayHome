@@ -67,7 +67,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:backgroundTint="@color/blue"
-        android:text="Коментари"
+        android:text="Профил"
         android:textColor="@color/white"
         android:onClick="OtvoriKomentari"/>
 

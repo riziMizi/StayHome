@@ -1,6 +1,7 @@
 package com.example.stayhome.firma;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,15 +9,23 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -31,10 +40,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.PKCS12Attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KomentariFirmaActivity extends AppCompatActivity {
+public class ProfilFirmaActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterKomentari mAdapter;
@@ -43,10 +53,20 @@ public class KomentariFirmaActivity extends AppCompatActivity {
 
     private RatingBar ratingBar;
 
+    private EditText editTextFirmaEmail, editTextFirmaTelefon, editTextFirmaTelefon2;
+    private TextView txtChooseImage, txtSaveEdit;
+
+    private ImageView imageViewFirmaLogo;
+
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
+
+    private Uri imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_komentari_firma);
+        setContentView(R.layout.activity_profil_firma);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
@@ -56,10 +76,25 @@ public class KomentariFirmaActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        editTextFirmaEmail = findViewById(R.id.editTextFirmaEmail);
+        editTextFirmaTelefon = findViewById(R.id.editTextFirmaTelefon);
+        editTextFirmaTelefon2 = findViewById(R.id.editTextFirmaTelefon2);
+
+        txtChooseImage = findViewById(R.id.txtChooseImage);
+        txtChooseImage.setVisibility(View.INVISIBLE);
+        txtSaveEdit = findViewById(R.id.txtSaveEdit);
+        txtSaveEdit.setVisibility(View.INVISIBLE);
+
+        editTextFirmaEmail.setEnabled(false);
+        editTextFirmaTelefon.setEnabled(false);
+        editTextFirmaTelefon2.setEnabled(false);
+
         ratingBar = findViewById(R.id.ratinBarFirma);
 
+        imageViewFirmaLogo = findViewById(R.id.imageViewFirmaLogo);
+
         NapraviLista();
-        PresmetajOcena();
+        PostaviProfil();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listKomentariFirma);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,7 +124,7 @@ public class KomentariFirmaActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(KomentariFirmaActivity.this, MainActivity.class));
+                        startActivity(new Intent(ProfilFirmaActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -128,12 +163,12 @@ public class KomentariFirmaActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(KomentariFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void PresmetajOcena() {
+    private void PostaviProfil() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -149,13 +184,99 @@ public class KomentariFirmaActivity extends AppCompatActivity {
                 } else {
                     ratingBar.setRating(0);
                 }
+                editTextFirmaEmail.setText(user.getEmail());
+                editTextFirmaTelefon.setText(user.getTelefon());
+                editTextFirmaTelefon2.setText(user.getTelefon2());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(KomentariFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    public void Edit(View view) {
+        editTextFirmaEmail.setEnabled(true);
+        editTextFirmaTelefon.setEnabled(true);
+        editTextFirmaTelefon2.setEnabled(true);
+        txtChooseImage.setVisibility(View.VISIBLE);
+        txtSaveEdit.setVisibility(View.VISIBLE);
+    }
+
+    public void ChooseImage(View view) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String [] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+
+            } else {
+                pickImageFromGallery();
+            }
+        } else {
+            pickImageFromGallery();
+        }
+
+    }
+
+    public void SaveEdit(View view) {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").
+                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                String Email = editTextFirmaEmail.getText().toString().trim();
+                String Telefon = editTextFirmaTelefon.getText().toString().trim();
+                String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
+                user.setEmail(Email);
+                user.setTelefon(Telefon);
+                user.setTelefon2(Telefon2);
+                snapshot.getRef().setValue(user);
+                Toast.makeText(ProfilFirmaActivity.this, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        txtSaveEdit.setVisibility(View.INVISIBLE);
+        txtChooseImage.setVisibility(View.INVISIBLE);
+        editTextFirmaEmail.setEnabled(false);
+        editTextFirmaTelefon.setEnabled(false);
+        editTextFirmaTelefon2.setEnabled(false);
+
+    }
+
+    public void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    Toast.makeText(this, "Недозволен пристап!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            imageUri = data.getData();
+            imageViewFirmaLogo.setImageURI(imageUri);
+        }
+    }
 }
