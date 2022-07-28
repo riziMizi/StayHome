@@ -84,13 +84,39 @@
             android:paddingLeft="10dp"
             android:textColor="@color/blue"
             android:textColorHint="@color/blue"
-            app:layout_constraintTop_toBottomOf="@+id/editMeniArtiklSostav" />
+            app:layout_constraintTop_toBottomOf="@+id/editMeniArtiklSostav"
+            android:inputType="number"
+            android:imeOptions="actionNone"/>
+
+        <ImageView
+            android:id="@+id/imageViewPredlogMeni"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_photo"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/editMeniArtiklCena"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:clickable="true"
+            android:onClick="ChooseImage"
+            />
+
+        <TextView
+            android:id="@+id/txtError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           app:layout_constraintBottom_toBottomOf="@+id/imageViewPredlogMeni"
+           app:layout_constraintLeft_toRightOf="@+id/imageViewPredlogMeni"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:drawableTop="@drawable/ic_error" />
 
         <Button
             android:id="@+id/buttonDodadiArtikl"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@id/editMeniArtiklCena"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPredlogMeni"
             android:layout_marginTop="40dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
@@ -98,6 +124,17 @@
             android:text="Додади артикл"
             android:textColor="@color/white"
             android:onClick="DodadiArtikl"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarPredlogMeni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.372" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listNapraviMeni"

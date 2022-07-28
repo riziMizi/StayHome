@@ -24,11 +24,23 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
 
+        <ImageView
+            android:id="@+id/rw1imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_photo"
+            android:layout_marginTop="20dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw1txtImeFirma"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            />
+
         <TextView
             android:id="@+id/rw1txtTipFirma"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw1txtImeFirma"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw1imageView"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
             android:textSize="15dp"

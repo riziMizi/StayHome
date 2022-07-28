@@ -1,5 +1,7 @@
 package com.example.stayhome.classes;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +11,26 @@ public class Meni {
     private int Cena;
     private String ArtiklId;
     private int Kolicina;
+    private String Slika;
+    private Uri SlikaUri;
 
     public Meni() {
 
     }
 
-    public Meni(String artikl, String sostavArtikl, int cena) {
+    public Meni(String artikl, String sostavArtikl, int cena, String slika) {
         this.Artikl = artikl;
         this.SostavArtikl = sostavArtikl;
         this.Cena = cena;
+        this.Slika = slika;
+    }
+
+    public Meni(String artikl, String sostavArtikl, int cena, String slika, Uri slikaUri) {
+        this.Artikl = artikl;
+        this.SostavArtikl = sostavArtikl;
+        this.Cena = cena;
+        this.Slika = slika;
+        this.SlikaUri = slikaUri;
     }
 
     public String getArtikl() {
@@ -58,5 +71,21 @@ public class Meni {
 
     public void setKolicina(int kolicina) {
         Kolicina = kolicina;
+    }
+
+    public String getSlika() {
+        return Slika;
+    }
+
+    public void setSlika(String slika) {
+        Slika = slika;
+    }
+
+    public Uri getSlikaUri() {
+        return SlikaUri;
+    }
+
+    public void setSlikaUri(Uri slikaUri) {
+        SlikaUri = slikaUri;
     }
 }

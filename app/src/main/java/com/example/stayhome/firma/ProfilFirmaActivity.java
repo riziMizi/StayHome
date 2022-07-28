@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,23 +23,32 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.Komentar;
 import com.example.stayhome.classes.User;
 import com.example.stayhome.myAdapterKomentari;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.security.PKCS12Attribute;
 import java.util.ArrayList;
@@ -48,10 +58,12 @@ public class ProfilFirmaActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterKomentari mAdapter;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     private List<Komentar> list = new ArrayList<>();
 
     private RatingBar ratingBar;
+    private ProgressBar progressBar;
 
     private EditText editTextFirmaEmail, editTextFirmaTelefon, editTextFirmaTelefon2;
     private TextView txtChooseImage, txtSaveEdit;
@@ -75,6 +87,9 @@ public class ProfilFirmaActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         editTextFirmaEmail = findViewById(R.id.editTextFirmaEmail);
         editTextFirmaTelefon = findViewById(R.id.editTextFirmaTelefon);
@@ -184,6 +199,10 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                 } else {
                     ratingBar.setRating(0);
                 }
+                if(!user.getFirmaLogo().equals("")) {
+                    Glide.with(ProfilFirmaActivity.this).load(user.getFirmaLogo()).into(imageViewFirmaLogo);
+                }
+
                 editTextFirmaEmail.setText(user.getEmail());
                 editTextFirmaTelefon.setText(user.getTelefon());
                 editTextFirmaTelefon2.setText(user.getTelefon2());
@@ -194,6 +213,60 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                 Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void UploadImageToFirebase(Uri uri) {
+        StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").
+                                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                String Email = editTextFirmaEmail.getText().toString().trim();
+                                String Telefon = editTextFirmaTelefon.getText().toString().trim();
+                                String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
+                                user.setEmail(Email);
+                                user.setTelefon(Telefon);
+                                user.setTelefon2(Telefon2);
+                                user.setFirmaLogo(uri.toString());
+                                snapshot.getRef().setValue(user);
+                                Toast.makeText(ProfilFirmaActivity.this, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(ProfilFirmaActivity.this, "Настана некоја грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String getFileExtention(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     public void Edit(View view) {
@@ -217,37 +290,41 @@ public class ProfilFirmaActivity extends AppCompatActivity {
         } else {
             pickImageFromGallery();
         }
-
     }
 
     public void SaveEdit(View view) {
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").
-                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                String Email = editTextFirmaEmail.getText().toString().trim();
-                String Telefon = editTextFirmaTelefon.getText().toString().trim();
-                String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
-                user.setEmail(Email);
-                user.setTelefon(Telefon);
-                user.setTelefon2(Telefon2);
-                snapshot.getRef().setValue(user);
-                Toast.makeText(ProfilFirmaActivity.this, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if(imageUri != null) {
+            UploadImageToFirebase(imageUri);
+        } else {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").
+                    child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    String Email = editTextFirmaEmail.getText().toString().trim();
+                    String Telefon = editTextFirmaTelefon.getText().toString().trim();
+                    String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
+                    user.setEmail(Email);
+                    user.setTelefon(Telefon);
+                    user.setTelefon2(Telefon2);
+                    snapshot.getRef().setValue(user);
+                    Toast.makeText(ProfilFirmaActivity.this, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ProfilFirmaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         txtSaveEdit.setVisibility(View.INVISIBLE);
         txtChooseImage.setVisibility(View.INVISIBLE);
         editTextFirmaEmail.setEnabled(false);
         editTextFirmaTelefon.setEnabled(false);
         editTextFirmaTelefon2.setEnabled(false);
+        imageUri = null;
 
     }
 

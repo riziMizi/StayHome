@@ -44,11 +44,23 @@
             android:textStyle="bold"
             android:textSize="25dp"/>
 
+        <ImageView
+            android:id="@+id/rw2imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_photo"
+            android:layout_marginTop="20dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw2txtImeFirma"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            />
+
         <RatingBar
             android:id="@+id/rw2ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw2txtImeFirma"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw2imageView"
             android:numStars="5"
             android:stepSize="0.5"
             card_view:layout_constraintLeft_toLeftOf="parent"
@@ -83,10 +95,21 @@
             android:textColor="@color/blue"/>
 
         <TextView
-            android:id="@+id/rw2txtRabotnoVreme"
+            android:id="@+id/rw2txtFirmaTelefon2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             card_view:layout_constraintTop_toBottomOf="@+id/rw2txtFirmaTelefon"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw2txtRabotnoVreme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw2txtFirmaTelefon2"
             card_view:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"

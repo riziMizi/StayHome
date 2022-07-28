@@ -9,12 +9,14 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +37,7 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtImeFirma, txtTipFirma, txtVidiMeni, txtConfirm, txtDecline;
+        private ImageView imageView;
 
 
         public ViewHolder(View itemView) {
@@ -44,6 +47,7 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
             txtVidiMeni = (TextView) itemView.findViewById(R.id.rw1txtVidiMeni);
             txtConfirm = (TextView) itemView.findViewById(R.id.rw1Confirm);
             txtDecline = (TextView) itemView.findViewById(R.id.rw1Decline);
+            imageView = (ImageView) itemView.findViewById(R.id.rw1imageView);
 
         }
     }
@@ -66,6 +70,10 @@ public class myAdapterAdmin extends RecyclerView.Adapter<myAdapterAdmin.ViewHold
         viewHolder.txtImeFirma.setText(user.getIme());
         viewHolder.txtTipFirma.setText("Тип на фирмата:  " + user.getTipFirma());
         viewHolder.txtVidiMeni.setText("Преглед на менито");
+
+        if(!user.getFirmaLogo().equals("")) {
+            Glide.with(mContext).load(myList.get(i).getFirmaLogo()).into(viewHolder.imageView);
+        }
 
         viewHolder.txtVidiMeni.setPaintFlags(viewHolder.txtVidiMeni.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 

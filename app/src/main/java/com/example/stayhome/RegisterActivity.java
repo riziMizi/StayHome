@@ -188,7 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     User user;
                     if(finalZnameDaliFirma == 1) {
-                        user = new User(Ime, Telefon,"", Email, finalTipUser, TipFirma, 0, 0, 0, 0, RabotniDenovi, VremeOd, VremeDo);
+                        user = new User(Ime, Telefon,"", Email, finalTipUser, TipFirma, 0, 0, 0, 0, RabotniDenovi, VremeOd, VremeDo, "");
                     } else {
                         user = new User(Ime, Telefon, Email, finalTipUser);
                     }

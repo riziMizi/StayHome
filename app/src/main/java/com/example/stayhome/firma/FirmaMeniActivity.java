@@ -1,6 +1,7 @@
 package com.example.stayhome.firma;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,17 +10,26 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +39,8 @@ import com.example.stayhome.classes.Meni;
 import com.example.stayhome.classes.User;
 import com.example.stayhome.myAdapterMeni;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +49,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,16 +68,27 @@ public class FirmaMeniActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewMeni;
     private myAdapterMeni mAdapterMeni;
 
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+
     private ConstraintLayout constraintLayoutDodadiMeni, constraintLayoutMeni;
 
     private EditText editTextArtikl, editTextArtiklSostav, editTextArtiklCena;
 
-    private TextView txtNepotvrdenoMeni;
+    private TextView txtNepotvrdenoMeni, txtError;
 
     private Button buttonIspratiMeni, buttonIspratiMeniPovtorno;
 
     private List<Meni> listaIspratiMeni = new ArrayList<>();
     private List<Meni> listaMeni = new ArrayList<>();
+
+    private ImageView imageView;
+
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
+
+    private Uri imageUri;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +102,11 @@ public class FirmaMeniActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        progressBar = findViewById(R.id.progressBarPredlogMeni);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        imageView = findViewById(R.id.imageViewPredlogMeni);
+
         buttonIspratiMeni = (Button) findViewById(R.id.buttonIspratiMeni);
         buttonIspratiMeni.setVisibility(View.INVISIBLE);
 
@@ -82,6 +114,8 @@ public class FirmaMeniActivity extends AppCompatActivity {
         buttonIspratiMeniPovtorno.setVisibility(View.INVISIBLE);
 
         txtNepotvrdenoMeni = (TextView) findViewById(R.id.txtNepotvrdenoMeni);
+        txtError = (TextView) findViewById(R.id.txtError);
+        txtError.setVisibility(View.INVISIBLE);
 
         editTextArtikl = (EditText) findViewById(R.id.editMeniArtikl);
         editTextArtiklSostav = (EditText) findViewById(R.id.editMeniArtiklSostav);
@@ -177,13 +211,19 @@ public class FirmaMeniActivity extends AppCompatActivity {
             return;
         }
 
-        Meni meni = new Meni(Artikl, ArtiklSostav, ArtiklCena);
+        if(imageUri == null) {
+            txtError.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        Meni meni = new Meni(Artikl, ArtiklSostav, ArtiklCena, imageUri.toString(), imageUri);
         listaIspratiMeni.add(meni);
 
         mAdapterIspratimeni.notifyDataSetChanged();
 
         IsprazniPolinja();
         buttonIspratiMeni.setVisibility(View.VISIBLE);
+        txtError.setVisibility(View.INVISIBLE);
 
     }
 
@@ -191,6 +231,11 @@ public class FirmaMeniActivity extends AppCompatActivity {
         editTextArtikl.setText("");
         editTextArtiklSostav.setText("");
         editTextArtiklCena.setText("");
+        imageUri = null;
+        String uri = "@drawable/ic_add_photo";
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        imageView.setImageDrawable(res);
     }
 
 
@@ -205,16 +250,33 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 for(Meni meni : listaIspratiMeni) {
-                    FirebaseDatabase.getInstance().getReference("Meni")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(UUID.randomUUID().toString()).setValue(meni).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(meni.getSlikaUri()));
+                    fileRef.putFile(meni.getSlikaUri()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if(!task.isSuccessful()) {
-                                Toast.makeText(FirmaMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Meni meni1 = new Meni(meni.getArtikl(), meni.getSostavArtikl(), meni.getCena(), meni.getSlika());
+                                    FirebaseDatabase.getInstance().getReference("Meni")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(UUID.randomUUID().toString()).
+                                            setValue(meni1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(!task.isSuccessful()) {
+                                                Toast.makeText(FirmaMeniActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(FirmaMeniActivity.this, "Настана некоја грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -349,5 +411,55 @@ public class FirmaMeniActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void ChooseImage(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String [] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+
+            } else {
+                pickImageFromGallery();
+            }
+        } else {
+            pickImageFromGallery();
+        }
+    }
+
+    public void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
+    private String getFileExtention(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    Toast.makeText(this, "Недозволен пристап!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
+            txtError.setVisibility(View.INVISIBLE);
+        }
     }
 }

@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FirmaActivity extends AppCompatActivity {
 
-    private Button buttonMeni, buttonNaracki, buttonKomentari;
+    private Button buttonMeni, buttonNaracki;
     private TextView txtPrvaNajava;
 
     @Override
@@ -41,11 +41,9 @@ public class FirmaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_firma);
         buttonMeni = (Button) findViewById(R.id.buttonMeni);
         buttonNaracki = (Button) findViewById(R.id.buttonNaracki);
-        buttonKomentari = (Button) findViewById(R.id.buttonKomentari);
 
         txtPrvaNajava = (TextView) findViewById(R.id.txtPrvaNajava);
 
-        buttonKomentari.setVisibility(View.INVISIBLE);
         buttonNaracki.setVisibility(View.INVISIBLE);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
@@ -55,7 +53,7 @@ public class FirmaActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.actionbar, menu);
+        inflater.inflate(R.menu.actionbar_firma, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -87,6 +85,8 @@ public class FirmaActivity extends AppCompatActivity {
                 });
                 AlertDialog alert = builder.create();
                 alert.show();
+            case R.id.action_profile:
+                startActivity(new Intent(FirmaActivity.this, ProfilFirmaActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -102,7 +102,6 @@ public class FirmaActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User korisnik = snapshot.getValue(User.class);
                 if(korisnik.getOdobrenoOdAdmin() == 1) {
-                    buttonKomentari.setVisibility(View.VISIBLE);
                     buttonNaracki.setVisibility(View.VISIBLE);
                     txtPrvaNajava.setVisibility(View.INVISIBLE);
                 }
@@ -125,8 +124,4 @@ public class FirmaActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void OtvoriKomentari(View view) {
-        Intent intent = new Intent(this, ProfilFirmaActivity.class);
-        startActivity(intent);
-    }
 }

@@ -71,13 +71,39 @@
         android:paddingLeft="10dp"
         android:textColor="@color/blue"
         android:textColorHint="@color/blue"
-        app:layout_constraintTop_toBottomOf="@+id/editDodadiMeniArtiklSostav" />
+        app:layout_constraintTop_toBottomOf="@+id/editDodadiMeniArtiklSostav"
+        android:inputType="number"
+        android:imeOptions="actionNone"/>
+
+    <ImageView
+        android:id="@+id/imageViewSlikaArtikl"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_add_photo"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/editDodadiMeniArtiklCena"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:clickable="true"
+        android:onClick="ChooseImage"
+        />
+
+    <TextView
+        android:id="@+id/txtErrorDodadiArtikl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewSlikaArtikl"
+        app:layout_constraintLeft_toRightOf="@id/imageViewSlikaArtikl"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:drawableTop="@drawable/ic_error" />
 
     <Button
         android:id="@+id/buttonDodadiArtikl1"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@id/editDodadiMeniArtiklCena"
+        app:layout_constraintTop_toBottomOf="@id/imageViewSlikaArtikl"
         android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
@@ -85,5 +111,16 @@
         android:text="Додади артикл"
         android:textColor="@color/white"
         android:onClick="DodadiArtikl"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarDodadiArtikl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

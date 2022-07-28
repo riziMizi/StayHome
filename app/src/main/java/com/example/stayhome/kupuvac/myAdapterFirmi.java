@@ -9,6 +9,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,9 +46,10 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtImeFirma, txtTipFirma, txtTelefonFirma, txtMeni, txtRabotnoVreme,
+        private TextView txtImeFirma, txtTipFirma, txtTelefonFirma, txtTelefonFirma2, txtMeni, txtRabotnoVreme,
                 txtKomentar, txtOcena;
         private RatingBar ratingBar;
+        private ImageView imageView;
 
 
         public ViewHolder(View itemView) {
@@ -54,11 +57,13 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
             txtImeFirma = (TextView) itemView.findViewById(R.id.rw2txtImeFirma);
             txtTipFirma = (TextView) itemView.findViewById(R.id.rw2txtTipFirma);
             txtTelefonFirma = (TextView) itemView.findViewById(R.id.rw2txtFirmaTelefon);
+            txtTelefonFirma2 = (TextView) itemView.findViewById(R.id.rw2txtFirmaTelefon2);
             txtMeni = (TextView) itemView.findViewById(R.id.rw2txtMeni);
             txtRabotnoVreme = (TextView) itemView.findViewById(R.id.rw2txtRabotnoVreme);
             ratingBar = (RatingBar) itemView.findViewById(R.id.rw2ratingBar);
             txtKomentar = (TextView) itemView.findViewById(R.id.rw2Komentari);
             txtOcena = (TextView) itemView.findViewById(R.id.rw2Ocena);
+            imageView = (ImageView) itemView.findViewById(R.id.rw2imageView);
         }
     }
 
@@ -80,8 +85,17 @@ public class myAdapterFirmi  extends RecyclerView.Adapter<myAdapterFirmi.ViewHol
         viewHolder.txtImeFirma.setText(user.getIme());
         viewHolder.txtTipFirma.setText(user.getTipFirma());
         viewHolder.txtTelefonFirma.setText("Телефон за контакт:  " + user.getTelefon());
+        if(!user.getTelefon2().equals("")) {
+            viewHolder.txtTelefonFirma2.setText("Телефон за контакт 2: " + user.getTelefon2());
+        } else {
+            viewHolder.txtTelefonFirma2.setText("Телефон за контакт 2: /" + user.getTelefon2());
+        }
+
         viewHolder.txtRabotnoVreme.setText("Работно време:  " + user.getRabotniDenovi() + "   " +
                 user.getVremeOd() + "-" + user.getVremeDo());
+        if(!user.getFirmaLogo().equals("")) {
+            Glide.with(mContext).load(myList.get(i).getFirmaLogo()).into(viewHolder.imageView);
+        }
 
         viewHolder.txtMeni.setPaintFlags(viewHolder.txtMeni.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 

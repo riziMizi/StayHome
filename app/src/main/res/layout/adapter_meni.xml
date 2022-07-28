@@ -13,38 +13,107 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/rwtxtMeniArtikl"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/rweditMeniArtikl"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textColor="@color/blue"
             android:textStyle="bold"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:background="#00000000"/>
+
+        <ImageView
+            android:id="@+id/rwImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_photo"
+            android:layout_marginTop="10dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/rweditMeniArtikl"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent" />
+
 
         <TextView
             android:id="@+id/rwtxtMeniArtiklSostav"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rwtxtMeniArtikl"
+            card_view:layout_constraintTop_toBottomOf="@+id/rwImageView"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Состав: "
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <EditText
+            android:id="@+id/rweditMeniArtiklSostav"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rwImageView"
+            card_view:layout_constraintLeft_toRightOf="@+id/rwtxtMeniArtiklSostav"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textSize="15dp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue"
+            android:background="#00000000"/>
 
         <TextView
             android:id="@+id/rwtxtMeniArtiklCena"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rwtxtMeniArtiklSostav"
+            card_view:layout_constraintTop_toBottomOf="@+id/rweditMeniArtiklSostav"
             card_view:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:textSize="15dp"
+            android:text="Цена: "
             android:textColor="@color/blue"/>
+
+        <EditText
+            android:id="@+id/rweditMeniArtiklCena"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rweditMeniArtiklSostav"
+            card_view:layout_constraintLeft_toRightOf="@+id/rwtxtMeniArtiklCena"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"
+            android:background="#00000000"
+            android:inputType="number"
+            android:imeOptions="actionNone"/>
+
+        <TextView
+            android:id="@+id/rwSaveEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rweditMeniArtiklCena"
+            card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="15dp"
+            android:text="Зачувај"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rwEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintRight_toLeftOf="@+id/rwDelete"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:drawableTop="@drawable/ic_edit" />
 
         <TextView
             android:id="@+id/rwDelete"

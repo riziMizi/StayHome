@@ -3,12 +3,12 @@ package com.example.stayhome.classes;
 public class User {
     private String Ime;
     private String Telefon;
-    private String Telefon2;
     private String Email;
     private String TipFirma;
     private String TipUser;
 
     //Firma
+    private String Telefon2;
     private int OdobrenoOdAdmin;
     private int PostoiMeni;
     private String FirmaId;
@@ -17,6 +17,7 @@ public class User {
     private String RabotniDenovi;
     private String VremeOd;
     private String VremeDo;
+    private String FirmaLogo;
 
     public User() {
 
@@ -32,7 +33,7 @@ public class User {
 
     //Firma
     public User(String ime, String telefon, String telefon2, String email,String tipUser, String tipFirma, int odobrenoOdAdmin,
-                int postoiMeni, int vkupnoOceni, int zbirOceni, String rabotniDenovi, String vremeOd, String vremeDo) {
+                int postoiMeni, int vkupnoOceni, int zbirOceni, String rabotniDenovi, String vremeOd, String vremeDo, String FirmaLogo) {
         this.Ime = ime;
         this.Telefon = telefon;
         this.Telefon2 = telefon2;
@@ -46,6 +47,7 @@ public class User {
         this.RabotniDenovi = rabotniDenovi;
         this.VremeOd = vremeOd;
         this.VremeDo = vremeDo;
+        this.FirmaLogo = FirmaLogo;
     }
 
     public String getIme() {
@@ -158,5 +160,13 @@ public class User {
 
     public void setTelefon2(String telefon2) {
         Telefon2 = telefon2;
+    }
+
+    public String getFirmaLogo() {
+        return FirmaLogo;
+    }
+
+    public void setFirmaLogo(String firmaLogo) {
+        FirmaLogo = firmaLogo;
     }
 }

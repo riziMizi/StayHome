@@ -1,21 +1,34 @@
 package com.example.stayhome;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.stayhome.classes.Meni;
 import com.example.stayhome.classes.User;
+import com.example.stayhome.firma.ProfilFirmaActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +36,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -32,21 +49,32 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
     private int rowLayout;
     private Context mContext;
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtArtikl, txtArtiklSostav, txtArtiklCena, txtDeleteArtikl;
+        public TextView txtDeleteArtikl, txtEditArtikl, txtSaveEdit;
+        private EditText editArtikl, editArtiklSostav, editArtiklCena;
+        private ImageView imageView;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtArtikl = (TextView)itemView.findViewById(R.id.rwtxtMeniArtikl);
-            txtArtiklSostav = (TextView) itemView.findViewById(R.id.rwtxtMeniArtiklSostav);
-            txtArtiklCena = (TextView) itemView.findViewById(R.id.rwtxtMeniArtiklCena);
+            editArtikl = (EditText) itemView.findViewById(R.id.rweditMeniArtikl);
+            editArtiklSostav = (EditText) itemView.findViewById(R.id.rweditMeniArtiklSostav);
+            editArtiklCena = (EditText) itemView.findViewById(R.id.rweditMeniArtiklCena);
             txtDeleteArtikl = (TextView) itemView.findViewById(R.id.rwDelete);
+            txtEditArtikl = (TextView) itemView.findViewById(R.id.rwEdit);
+            txtSaveEdit = (TextView) itemView.findViewById(R.id.rwSaveEdit);
+            imageView = (ImageView) itemView.findViewById(R.id.rwImageView);
+
+            editArtikl.setEnabled(false);
+            editArtiklSostav.setEnabled(false);
+            editArtiklCena.setEnabled(false);
 
             txtDeleteArtikl.setVisibility(View.INVISIBLE);
-            StaviDeleteVisible(txtDeleteArtikl);
-
+            txtEditArtikl.setVisibility(View.INVISIBLE);
+            txtSaveEdit.setVisibility(View.INVISIBLE);
+            StaviDeleteVisible(txtDeleteArtikl, txtEditArtikl);
         }
     }
 
@@ -67,9 +95,57 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Meni meni = myList.get(i);
 
-        viewHolder.txtArtikl.setText(meni.getArtikl());
-        viewHolder.txtArtiklSostav.setText("Состав:\n" + meni.getSostavArtikl());
-        viewHolder.txtArtiklCena.setText("Цена:  " + String.valueOf(meni.getCena() + " ден."));
+        viewHolder.editArtikl.setText(meni.getArtikl());
+        viewHolder.editArtiklSostav.setText(meni.getSostavArtikl());
+        viewHolder.editArtiklCena.setText(String.valueOf(meni.getCena()));
+
+        if(!meni.getSlika().equals("")) {
+            Glide.with(mContext).load(myList.get(i).getSlika()).into(viewHolder.imageView);
+        }
+
+        viewHolder.txtEditArtikl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewHolder.editArtikl.setEnabled(true);
+                viewHolder.editArtiklSostav.setEnabled(true);
+                viewHolder.editArtiklCena.setEnabled(true);
+                viewHolder.txtSaveEdit.setVisibility(View.VISIBLE);
+            }
+        });
+
+        viewHolder.txtSaveEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewHolder.editArtikl.setEnabled(false);
+                viewHolder.editArtiklSostav.setEnabled(false);
+                viewHolder.editArtiklCena.setEnabled(false);
+                viewHolder.txtSaveEdit.setVisibility(View.INVISIBLE);
+
+                String Artikl = viewHolder.editArtikl.getText().toString().trim();
+                String ArtiklSostav = viewHolder.editArtiklSostav.getText().toString().trim();
+                String ArtiklCena = viewHolder.editArtiklCena.getText().toString().trim();
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().
+                        child("Meni").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                databaseReference.child(meni.getArtiklId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Meni meni1 = snapshot.getValue(Meni.class);
+                        meni1.setArtikl(Artikl);
+                        meni1.setSostavArtikl(ArtiklSostav);
+                        meni1.setCena(Integer.parseInt(ArtiklCena));
+                        snapshot.getRef().setValue(meni1);
+                        Toast.makeText(mContext, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
 
         viewHolder.txtDeleteArtikl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +182,7 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
         return myList == null ? 0 : myList.size();
     }
 
-    private void StaviDeleteVisible(TextView textView) {
+    private void StaviDeleteVisible(TextView txtDelete, TextView txtEdit) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -116,7 +192,8 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User korisnik = snapshot.getValue(User.class);
                 if(korisnik.getPostoiMeni() == 1 || korisnik.getPostoiMeni() == 2) {
-                    textView.setVisibility(View.VISIBLE);
+                    txtDelete.setVisibility(View.VISIBLE);
+                    txtEdit.setVisibility(View.VISIBLE);
                 }
             }
 
