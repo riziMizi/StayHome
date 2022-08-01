@@ -53,7 +53,7 @@
             android:layout_marginRight="20dp"
             android:drawableTop="@drawable/ic_edit"
             android:clickable="true"
-            android:onClick="Edit"/>
+            android:onClick="Edit" />
 
         <TextView
             android:id="@+id/txtSaveEdit"
@@ -98,19 +98,47 @@
 
         <EditText
             android:id="@+id/editTextFirmaEmail"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/border_edittext_blue"
+            android:background="#00000000"
             android:drawableLeft="@drawable/ic_email_blue"
             android:drawablePadding="10dp"
             android:hint="Е-маил"
             android:paddingLeft="10dp"
             android:textColor="@color/blue"
             android:textColorHint="@color/blue"
-            app:layout_constraintTop_toBottomOf="@+id/ratinBarFirma"/>
+            app:layout_constraintTop_toBottomOf="@+id/ratinBarFirma"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtNotVerified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ratinBarFirma"
+            app:layout_constraintLeft_toRightOf="@+id/editTextFirmaEmail"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:drawableTop="@drawable/ic_not_verified"
+            android:text="Not verified!"
+            android:textColor="@color/red"
+            android:clickable="true"
+            android:onClick="VerifyEmail"/>
+
+        <TextView
+            android:id="@+id/txtVerified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ratinBarFirma"
+            app:layout_constraintLeft_toRightOf="@+id/editTextFirmaEmail"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:drawableTop="@drawable/ic_verified"
+            android:text="Verified!"
+            android:textColor="@color/green"/>
+
 
         <EditText
             android:id="@+id/editTextFirmaTelefon"

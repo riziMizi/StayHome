@@ -15,13 +15,16 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -40,6 +43,7 @@ import com.example.stayhome.myAdapterKomentari;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,7 +70,7 @@ public class ProfilFirmaActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private EditText editTextFirmaEmail, editTextFirmaTelefon, editTextFirmaTelefon2;
-    private TextView txtChooseImage, txtSaveEdit;
+    private TextView txtChooseImage, txtSaveEdit, txtVerify, txtVerified;
 
     private ImageView imageViewFirmaLogo;
 
@@ -99,6 +103,10 @@ public class ProfilFirmaActivity extends AppCompatActivity {
         txtChooseImage.setVisibility(View.INVISIBLE);
         txtSaveEdit = findViewById(R.id.txtSaveEdit);
         txtSaveEdit.setVisibility(View.INVISIBLE);
+        txtVerify = findViewById(R.id.txtNotVerified);
+        txtVerify.setEnabled(false);
+        txtVerified = findViewById(R.id.txtVerified);
+
 
         editTextFirmaEmail.setEnabled(false);
         editTextFirmaTelefon.setEnabled(false);
@@ -110,6 +118,7 @@ public class ProfilFirmaActivity extends AppCompatActivity {
 
         NapraviLista();
         PostaviProfil();
+        CheckIfEmailIsVerified();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listKomentariFirma);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -229,10 +238,8 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = snapshot.getValue(User.class);
-                                String Email = editTextFirmaEmail.getText().toString().trim();
                                 String Telefon = editTextFirmaTelefon.getText().toString().trim();
                                 String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
-                                user.setEmail(Email);
                                 user.setTelefon(Telefon);
                                 user.setTelefon2(Telefon2);
                                 user.setFirmaLogo(uri.toString());
@@ -270,11 +277,12 @@ public class ProfilFirmaActivity extends AppCompatActivity {
     }
 
     public void Edit(View view) {
-        editTextFirmaEmail.setEnabled(true);
         editTextFirmaTelefon.setEnabled(true);
         editTextFirmaTelefon2.setEnabled(true);
+        txtVerify.setEnabled(true);
         txtChooseImage.setVisibility(View.VISIBLE);
         txtSaveEdit.setVisibility(View.VISIBLE);
+        txtVerify.setPaintFlags(txtVerify.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     public void ChooseImage(View view) {
@@ -303,10 +311,8 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User user = snapshot.getValue(User.class);
-                    String Email = editTextFirmaEmail.getText().toString().trim();
                     String Telefon = editTextFirmaTelefon.getText().toString().trim();
                     String Telefon2 = editTextFirmaTelefon2.getText().toString().trim();
-                    user.setEmail(Email);
                     user.setTelefon(Telefon);
                     user.setTelefon2(Telefon2);
                     snapshot.getRef().setValue(user);
@@ -321,9 +327,10 @@ public class ProfilFirmaActivity extends AppCompatActivity {
 
         txtSaveEdit.setVisibility(View.INVISIBLE);
         txtChooseImage.setVisibility(View.INVISIBLE);
-        editTextFirmaEmail.setEnabled(false);
         editTextFirmaTelefon.setEnabled(false);
         editTextFirmaTelefon2.setEnabled(false);
+        txtVerify.setEnabled(false);
+        txtVerify.setPaintFlags(0);
         imageUri = null;
 
     }
@@ -354,6 +361,33 @@ public class ProfilFirmaActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             imageUri = data.getData();
             imageViewFirmaLogo.setImageURI(imageUri);
+        }
+    }
+
+    public void VerifyEmail(View view) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                txtVerify.setEnabled(false);
+                txtVerify.setPaintFlags(0);
+                Toast.makeText(ProfilFirmaActivity.this, "Испратен е линк за верифиакција на вашата е-маил адреса!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("123","onFailure: Email not sent: " + e.getMessage());
+            }
+        });
+    }
+
+    private void CheckIfEmailIsVerified() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser.isEmailVerified()) {
+            txtVerify.setVisibility(View.INVISIBLE);
+
+        } else {
+            txtVerified.setVisibility(View.INVISIBLE);
         }
     }
 }
