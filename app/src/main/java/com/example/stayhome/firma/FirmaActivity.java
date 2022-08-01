@@ -21,6 +21,7 @@ import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.User;
 import com.example.stayhome.firma.naracki.FirmaNarackiActivity;
+import com.example.stayhome.kupuvac.KupuvacActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FirmaActivity extends AppCompatActivity {
 
-    private Button buttonMeni, buttonNaracki;
+    private Button buttonMeni, buttonNaracki, buttonNaracaj;
     private TextView txtPrvaNajava;
 
     @Override
@@ -41,10 +42,12 @@ public class FirmaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_firma);
         buttonMeni = (Button) findViewById(R.id.buttonMeni);
         buttonNaracki = (Button) findViewById(R.id.buttonNaracki);
+        buttonNaracaj = (Button) findViewById(R.id.buttonNaracaj);
 
         txtPrvaNajava = (TextView) findViewById(R.id.txtPrvaNajava);
 
         buttonNaracki.setVisibility(View.INVISIBLE);
+        buttonNaracaj.setVisibility(View.INVISIBLE);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
@@ -103,6 +106,7 @@ public class FirmaActivity extends AppCompatActivity {
                 User korisnik = snapshot.getValue(User.class);
                 if(korisnik.getOdobrenoOdAdmin() == 1) {
                     buttonNaracki.setVisibility(View.VISIBLE);
+                    buttonNaracaj.setVisibility(View.VISIBLE);
                     txtPrvaNajava.setVisibility(View.INVISIBLE);
                 }
             }
@@ -124,4 +128,8 @@ public class FirmaActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void Naracaj(View view) {
+        Intent intent = new Intent(this, KupuvacActivity.class);
+        startActivity(intent);
+    }
 }

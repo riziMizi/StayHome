@@ -24,7 +24,9 @@ import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.Meni;
 import com.example.stayhome.classes.Naracka;
+import com.example.stayhome.classes.User;
 import com.example.stayhome.googleMap.GoogleMapActivity;
+import com.example.stayhome.kupuvac.KupuvacActivity;
 import com.example.stayhome.kupuvac.KupuvacAktivniNaracki;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,11 +44,11 @@ import java.util.UUID;
 
 public class NarackaActivity extends AppCompatActivity {
 
-    private TextView txtIznosNaracka, txtNaracka, txtLokacija, txtIzberiLokacija;
+    private TextView txtIznosNaracka, txtNaracka, txtLokacija, txtIzberiLokacija, txtIznosNarackaSoPopust;
     private EditText editZabeleska;
     private Button buttonNaracaj;
 
-    private int Iznos;
+    private int Iznos, IznosSoPopust;
     private String Naracka;
 
     private String FirmaId = "";
@@ -55,6 +57,8 @@ public class NarackaActivity extends AppCompatActivity {
 
     private double Lat,Log = 0;
     private String Address = "";
+
+    private int ZnameTipKorisnik = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,8 @@ public class NarackaActivity extends AppCompatActivity {
         FirmaId = intent.getStringExtra("FirmaId");
 
         Iznos = 0;
+        IznosSoPopust = 0;
+
         Naracka = "";
 
         buttonNaracaj = (Button) findViewById(R.id.buttonNaracaj);
@@ -73,6 +79,7 @@ public class NarackaActivity extends AppCompatActivity {
         txtIznosNaracka = (TextView) findViewById(R.id.txtIznosNaracka);
         txtLokacija = (TextView) findViewById(R.id.txtLokacija);
         txtIzberiLokacija = (TextView) findViewById(R.id.txtIzborLokacija);
+        txtIznosNarackaSoPopust = (TextView) findViewById(R.id.txtIznosNarackaSoPopust);
 
         editZabeleska = (EditText) findViewById(R.id.editZabeleska);
 
@@ -81,6 +88,7 @@ public class NarackaActivity extends AppCompatActivity {
         txtIzberiLokacija.setVisibility(View.INVISIBLE);
         editZabeleska.setVisibility(View.INVISIBLE);
 
+        ProveriTipKorisnik();
         PostaviNaracka();
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
@@ -159,6 +167,7 @@ public class NarackaActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Naracka = "";
                 Iznos = 0;
+                IznosSoPopust = 0;
                 if(snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Meni meni = dataSnapshot.getValue(Meni.class);
@@ -166,7 +175,11 @@ public class NarackaActivity extends AppCompatActivity {
                         Iznos += meni.getKolicina() * meni.getCena();
                     }
                     txtNaracka.setText(Naracka);
-                    txtIznosNaracka.setText("Вкупен износ: " + String.valueOf(Iznos) + " ден.");
+                    txtIznosNaracka.setText("Вкупен износ: " + String.valueOf(Iznos) + " ден. ");
+                    if(ZnameTipKorisnik == 1 && Iznos > 1000) {
+                        IznosSoPopust =(int) (Iznos * 0.85);
+                        txtIznosNarackaSoPopust.setText("/ " + String.valueOf(IznosSoPopust) + " ден.");
+                    }
                 }
                 if(!txtNaracka.getText().toString().trim().equals("")) {
                     buttonNaracaj.setVisibility(View.VISIBLE);
@@ -209,7 +222,11 @@ public class NarackaActivity extends AppCompatActivity {
             txtIzberiLokacija.setError(null);
         }
 
+
         com.example.stayhome.classes.Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum);
+        if(IznosSoPopust > 0) {
+            naracka.setCena(IznosSoPopust);
+        }
 
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("AktivniNaracki")
                 .child(UUID.randomUUID().toString());
@@ -225,4 +242,24 @@ public class NarackaActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void ProveriTipKorisnik() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User korisnik = snapshot.getValue(User.class);
+                if(korisnik.getTipUser().equals("Firma")) {
+                    ZnameTipKorisnik = 1;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

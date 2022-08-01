@@ -1,6 +1,7 @@
 package com.example.stayhome.kupuvac;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,17 +17,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.User;
+import com.example.stayhome.firma.FirmaMeniActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,8 @@ public class KupuvacActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterFirmi mAdapter;
+
+     private TextView txtViewPopust;
 
     private List<User> list = new ArrayList<>();
 
@@ -45,6 +53,11 @@ public class KupuvacActivity extends AppCompatActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
+
+        txtViewPopust = (TextView) findViewById(R.id.txtPopust);
+        txtViewPopust.setVisibility(View.INVISIBLE);
+
+        ProveriTipKorisnik();
         NapraviLista();
         IzbrisiNaracki();
 
@@ -96,6 +109,9 @@ public class KupuvacActivity extends AppCompatActivity {
     }
 
     private void NapraviLista() {
+        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user1.getUid();
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -105,7 +121,9 @@ public class KupuvacActivity extends AppCompatActivity {
                     User user = dataSnapshot.getValue(User.class);
                     user.setFirmaId(dataSnapshot.getKey());
                     if(user.getTipUser().equals("Firma") && user.getOdobrenoOdAdmin() == 1) {
-                        list.add(user);
+                        if(!uid.equals(user.getFirmaId())) {
+                            list.add(user);
+                        }
                     }
                 }
 
@@ -127,5 +145,30 @@ public class KupuvacActivity extends AppCompatActivity {
     public void AktivniNaracki(View view) {
         Intent intent = new Intent(this, KupuvacAktivniNaracki.class);
         startActivity(intent);
+    }
+
+    private void ProveriTipKorisnik() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User korisnik = snapshot.getValue(User.class);
+                if(korisnik.getTipUser().equals("Firma")) {
+                    txtViewPopust.setVisibility(View.VISIBLE);
+                    ActionBar actionBar = getSupportActionBar();
+                    if (actionBar != null) {
+                        actionBar.setDisplayHomeAsUpEnabled(true);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(KupuvacActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

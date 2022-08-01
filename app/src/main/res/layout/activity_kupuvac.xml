@@ -31,6 +31,18 @@
         android:textColor="@color/white"
         android:onClick="AktivniNaracki"/>
 
+    <TextView
+        android:id="@+id/txtPopust"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonVasiNaracki"
+        app:layout_constraintTop_toTopOf="@+id/buttonVasiNaracki"
+        app:layout_constraintLeft_toRightOf="@+id/buttonVasiNaracki"
+        android:layout_marginLeft="23dp"
+        android:text="@string/popustNaracka"
+        android:textColor="@color/red"
+        android:textSize="13dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listFirmi"
         android:scrollbars="vertical"

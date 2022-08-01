@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.stayhome.classes.Meni;
 import com.example.stayhome.classes.User;
+import com.example.stayhome.firma.FirmaMeniActivity;
 import com.example.stayhome.firma.ProfilFirmaActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,6 +50,7 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
     private List<Meni> myList;
     private int rowLayout;
     private Context mContext;
+    private User userFirma;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +58,7 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
         public TextView txtDeleteArtikl, txtEditArtikl, txtSaveEdit;
         private EditText editArtikl, editArtiklSostav, editArtiklCena;
         private ImageView imageView;
+
 
 
         public ViewHolder(View itemView) {
@@ -125,25 +129,32 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
                 String ArtiklSostav = viewHolder.editArtiklSostav.getText().toString().trim();
                 String ArtiklCena = viewHolder.editArtiklCena.getText().toString().trim();
 
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().
-                        child("Meni").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                databaseReference.child(meni.getArtiklId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Meni meni1 = snapshot.getValue(Meni.class);
-                        meni1.setArtikl(Artikl);
-                        meni1.setSostavArtikl(ArtiklSostav);
-                        meni1.setCena(Integer.parseInt(ArtiklCena));
-                        snapshot.getRef().setValue(meni1);
-                        Toast.makeText(mContext, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
-                    }
+                if(userFirma.getPostoiMeni() == 0) {
+                    meni.setArtikl(Artikl);
+                    meni.setSostavArtikl(ArtiklSostav);
+                    meni.setCena(Integer.parseInt(ArtiklCena));
+                    Toast.makeText(mContext, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+                } else {
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().
+                            child("Meni").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    databaseReference.child(meni.getArtiklId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Meni meni1 = snapshot.getValue(Meni.class);
+                            meni1.setArtikl(Artikl);
+                            meni1.setSostavArtikl(ArtiklSostav);
+                            meni1.setCena(Integer.parseInt(ArtiklCena));
+                            snapshot.getRef().setValue(meni1);
+                            Toast.makeText(mContext, "Успешно направивте промена!", Toast.LENGTH_SHORT).show();
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
 
@@ -156,10 +167,14 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
                 builder.setMessage("Дали сигурно сакате да го избришете овој артикл од менито?");
 
                 builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
-
                     public void onClick(DialogInterface dialog, int which) {
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Meni").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        databaseReference.child(meni.getArtiklId()).removeValue();
+                        if(userFirma.getPostoiMeni() == 0) {
+                            myList.remove(viewHolder.getAdapterPosition());
+                            notifyDataSetChanged();
+                        } else {
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Meni").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            databaseReference.child(meni.getArtiklId()).removeValue();
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -191,10 +206,15 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User korisnik = snapshot.getValue(User.class);
-                if(korisnik.getPostoiMeni() == 1 || korisnik.getPostoiMeni() == 2) {
+                if(korisnik.getTipUser().equals("Firma")) {
+                    userFirma = korisnik;
                     txtDelete.setVisibility(View.VISIBLE);
                     txtEdit.setVisibility(View.VISIBLE);
                 }
+//                if(korisnik.getPostoiMeni() == 1 || korisnik.getPostoiMeni() == 2) {
+//                    txtDelete.setVisibility(View.VISIBLE);
+//                    txtEdit.setVisibility(View.VISIBLE);
+//                }
             }
 
             @Override

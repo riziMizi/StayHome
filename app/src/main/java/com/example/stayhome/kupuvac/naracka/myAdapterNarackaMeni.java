@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.Meni;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +37,7 @@ public class myAdapterNarackaMeni extends RecyclerView.Adapter<myAdapterNarackaM
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtArtikl, txtArtiklSostav, txtArtiklCena, txtKolicina, txtDodadi, txtOdzemi;
+        private ImageView imageView;
 
 
         public ViewHolder(View itemView) {
@@ -45,7 +48,7 @@ public class myAdapterNarackaMeni extends RecyclerView.Adapter<myAdapterNarackaM
             txtKolicina = (TextView) itemView.findViewById(R.id.rw3txtKolicina);
             txtDodadi = (TextView) itemView.findViewById(R.id.rw3Dodadi);
             txtOdzemi = (TextView) itemView.findViewById(R.id.rw3Odzemi);
-
+            imageView = (ImageView) itemView.findViewById(R.id.rw3imageViewKupuvacNaracka);
         }
     }
 
@@ -69,6 +72,10 @@ public class myAdapterNarackaMeni extends RecyclerView.Adapter<myAdapterNarackaM
         viewHolder.txtArtikl.setText(meni.getArtikl());
         viewHolder.txtArtiklSostav.setText("Состав:\n" + meni.getSostavArtikl());
         viewHolder.txtArtiklCena.setText("Цена:  " + String.valueOf(meni.getCena() + " ден."));
+
+        if(!meni.getSlika().equals("")) {
+            Glide.with(mContext).load(myList.get(i).getSlika()).into(viewHolder.imageView);
+        }
 
         viewHolder.txtKolicina.setText(String.valueOf(meni.getKolicina()));
 

@@ -76,7 +76,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
     private TextView txtNepotvrdenoMeni, txtError;
 
-    private Button buttonIspratiMeni, buttonIspratiMeniPovtorno;
+    public Button buttonIspratiMeni, buttonIspratiMeniPovtorno;
 
     private List<Meni> listaIspratiMeni = new ArrayList<>();
     private List<Meni> listaMeni = new ArrayList<>();
@@ -101,6 +101,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
 
         progressBar = findViewById(R.id.progressBarPredlogMeni);
         progressBar.setVisibility(View.INVISIBLE);
@@ -249,6 +250,10 @@ public class FirmaMeniActivity extends AppCompatActivity {
         builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+                if(listaIspratiMeni.size() == 0) {
+                    Toast.makeText(FirmaMeniActivity.this, "Немате ниту еден артикл во менито!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 for(Meni meni : listaIspratiMeni) {
                     StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(meni.getSlikaUri()));
                     fileRef.putFile(meni.getSlikaUri()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -269,8 +274,14 @@ public class FirmaMeniActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
+                                    progressBar.setVisibility(View.INVISIBLE);
                                 }
                             });
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                            progressBar.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -297,6 +308,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
                 dialog.dismiss();
                 Intent intent = new Intent(FirmaMeniActivity.this, FirmaMeniActivity.class);
                 startActivity(intent);
+
             }
         });
 

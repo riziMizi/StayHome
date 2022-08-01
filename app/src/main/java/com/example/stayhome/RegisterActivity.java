@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editIme, editTelefon, editEmail, editPassword, editPassword2;
     private RadioGroup radioGroup;
     private TextView txtSaatOd, txtSaatDo, txtRabotnoVreme;
+    private ProgressBar progressBar;
 
     private int saat, minuti;
 
@@ -61,6 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         txtRabotnoVreme.setVisibility(View.INVISIBLE);
         txtSaatOd.setVisibility(View.INVISIBLE);
         txtSaatDo.setVisibility(View.INVISIBLE);
+
+        progressBar = findViewById(R.id.progressBarRegister);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -182,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         int finalZnameDaliFirma = ZnameDaliFirma;
         String finalTipUser = TipUser;
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -201,13 +207,16 @@ public class RegisterActivity extends AppCompatActivity {
                                     if(task1.isSuccessful()) {
                                         Toast.makeText(RegisterActivity.this, "Успешно се регистриравте!", Toast.LENGTH_SHORT).show();
                                         startActivity(intent);
+                                        progressBar.setVisibility(View.INVISIBLE);
                                     } else {
                                         Toast.makeText(RegisterActivity.this, "Неуспешна регистрација.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 }
                             });
                 } else {
                     Toast.makeText(RegisterActivity.this, "Неуспешна регистрација.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });

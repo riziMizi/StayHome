@@ -58,8 +58,24 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/editLoginEmail"
+        android:drawableRight="@drawable/ic_visibility_off"
         android:layout_marginBottom="20dp"
-        android:inputType="textPassword"/>
+        android:paddingRight="10dp"
+        android:inputType="textPassword"
+        android:longClickable="false"/>
+
+    <TextView
+        android:id="@+id/txtForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editLoginPassword"
+        android:text="Заборавена лизинка?"
+        android:layout_marginTop="5dp"
+        android:textSize="13dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        android:onClick="ForgotPassrowd"/>
 
     <Button
         android:id="@+id/buttonLogin"
@@ -87,6 +103,18 @@
         android:layout_marginRight="30dp"
         android:textColor="@color/white"
         android:onClick="GoToRegister"/>
+
+
+    <ProgressBar
+        android:id="@+id/progressBarLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

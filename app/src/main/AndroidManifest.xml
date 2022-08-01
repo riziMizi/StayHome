@@ -73,7 +73,8 @@
             android:parentActivityName=".firma.FirmaActivity" />
         <activity
             android:name=".kupuvac.KupuvacActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".firma.FirmaActivity"/>
         <activity
             android:name=".firma.FirmaActivity"
             android:exported="false" />

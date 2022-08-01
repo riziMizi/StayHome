@@ -60,6 +60,20 @@
         android:textColor="@color/white"
         android:onClick="OtvoriNaracki"/>
 
+    <Button
+        android:id="@+id/buttonNaracaj"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toBottomOf="@id/buttonNaracki"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:backgroundTint="@color/blue"
+        android:text="Нарачај"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:onClick="Naracaj"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
