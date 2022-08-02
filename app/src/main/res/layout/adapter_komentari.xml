@@ -25,6 +25,16 @@
             android:textSize="17dp"/>
 
         <TextView
+            android:id="@+id/rw6Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:drawableTop="@drawable/ic_delete" />
+
+        <TextView
             android:id="@+id/rw6txtKomentar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +44,8 @@
             android:textColor="@color/blue"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:paddingBottom="5dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

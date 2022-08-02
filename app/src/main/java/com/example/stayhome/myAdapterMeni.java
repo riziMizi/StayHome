@@ -211,10 +211,6 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
                     txtDelete.setVisibility(View.VISIBLE);
                     txtEdit.setVisibility(View.VISIBLE);
                 }
-//                if(korisnik.getPostoiMeni() == 1 || korisnik.getPostoiMeni() == 2) {
-//                    txtDelete.setVisibility(View.VISIBLE);
-//                    txtEdit.setVisibility(View.VISIBLE);
-//                }
             }
 
             @Override

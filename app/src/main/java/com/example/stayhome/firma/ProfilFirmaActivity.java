@@ -178,6 +178,7 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Komentar komentar = dataSnapshot.getValue(Komentar.class);
                         if(komentar.getFirmaId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            komentar.setKomentarId(dataSnapshot.getKey());
                             list.add(komentar);
                         }
                     }
