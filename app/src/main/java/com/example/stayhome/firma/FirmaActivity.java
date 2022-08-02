@@ -63,7 +63,9 @@ public class FirmaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-
+            case R.id.action_profile:
+                startActivity(new Intent(FirmaActivity.this, ProfilFirmaActivity.class));
+                return true;
             case R.id.action_signout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -88,8 +90,6 @@ public class FirmaActivity extends AppCompatActivity {
                 });
                 AlertDialog alert = builder.create();
                 alert.show();
-            case R.id.action_profile:
-                startActivity(new Intent(FirmaActivity.this, ProfilFirmaActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }

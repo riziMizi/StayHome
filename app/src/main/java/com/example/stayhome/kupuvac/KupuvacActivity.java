@@ -23,7 +23,9 @@ import android.widget.Toast;
 import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.User;
+import com.example.stayhome.firma.FirmaActivity;
 import com.example.stayhome.firma.FirmaMeniActivity;
+import com.example.stayhome.firma.ProfilFirmaActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -71,14 +73,16 @@ public class KupuvacActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.actionbar, menu);
+        inflater.inflate(R.menu.actionbar_firma, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-
+            case R.id.action_profile:
+                startActivity(new Intent(KupuvacActivity.this, KupuvacProfilActivity.class));
+                return true;
             case R.id.action_signout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

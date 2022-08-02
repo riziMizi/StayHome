@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".kupuvac.KupuvacProfilActivity"
+            android:exported="false"
+            android:parentActivityName=".kupuvac.KupuvacActivity"/>
+        <activity
             android:name=".firma.ProfilFirmaActivity"
             android:exported="false"
-            android:parentActivityName=".firma.FirmaActivity"/>
+            android:parentActivityName=".firma.FirmaActivity" />
         <activity
             android:name=".kupuvac.KomentariActivity"
             android:exported="false"
@@ -74,7 +78,7 @@
         <activity
             android:name=".kupuvac.KupuvacActivity"
             android:exported="false"
-            android:parentActivityName=".firma.FirmaActivity"/>
+            android:parentActivityName=".firma.FirmaActivity" />
         <activity
             android:name=".firma.FirmaActivity"
             android:exported="false" />

@@ -38,11 +38,14 @@
         <entry key="..\:/Users/Bojan/Documents/GitHub/StayHome/app/src/main/res/menu/actionbar_kupuvac.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/border_edittext.xml" value="0.332" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/border_edittext_blue.xml" value="0.27" />
+        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_account.xml" value="0.332" />
+        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_add.xml" value="0.332" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_add_photo.xml" value="0.27" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_email.xml" value="0.27" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_email_blue.xml" value="0.2415" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_person.xml" value="0.332" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_phone.xml" value="0.2415" />
+        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/drawable/ic_profile.xml" value="0.332" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_dodadi_artikl.xml" value="0.3015625" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_firma.xml" value="0.23541666666666666" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_firma_meni.xml" value="0.26510416666666664" />
@@ -51,9 +54,10 @@
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac_aktivni_naracki.xml" value="0.28541666666666665" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac_meni.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_kupuvac_profil.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_naracka.xml" value="0.33" />
-        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_profil_firma.xml" value="0.25" />
+        <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_profil_firma.xml" value="0.33" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_admin.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rizi/Documents/GitHub/StayHome/app/src/main/res/layout/adapter_firma_naracki.xml" value="0.28541666666666665" />
