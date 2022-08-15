@@ -1,11 +1,15 @@
 package com.example.stayhome.classes;
 
+
+import java.util.ArrayList;
+
 public class User {
     private String Ime;
     private String Telefon;
     private String Email;
     private String TipFirma;
     private String TipUser;
+    private ArrayList<String> OpstiniDostavuvac;
 
     //Firma
     private String Telefon2;
@@ -18,9 +22,19 @@ public class User {
     private String VremeOd;
     private String VremeDo;
     private String FirmaLogo;
+    private String Opstina;
 
     public User() {
 
+    }
+
+    //Dostavuvac
+    public User(String ime, String telefon, String email, String tipUser, ArrayList<String> opstiniDostavuvac) {
+        this.Ime = ime;
+        this.Telefon = telefon;
+        this.Email = email;
+        this.TipUser = tipUser;
+        this.OpstiniDostavuvac = opstiniDostavuvac;
     }
 
     //Kupuvac
@@ -33,7 +47,7 @@ public class User {
 
     //Firma
     public User(String ime, String telefon, String telefon2, String email,String tipUser, String tipFirma, int odobrenoOdAdmin,
-                int postoiMeni, int vkupnoOceni, int zbirOceni, String rabotniDenovi, String vremeOd, String vremeDo, String FirmaLogo) {
+                int postoiMeni, int vkupnoOceni, int zbirOceni, String rabotniDenovi, String vremeOd, String vremeDo, String FirmaLogo, String opstina) {
         this.Ime = ime;
         this.Telefon = telefon;
         this.Telefon2 = telefon2;
@@ -48,6 +62,7 @@ public class User {
         this.VremeOd = vremeOd;
         this.VremeDo = vremeDo;
         this.FirmaLogo = FirmaLogo;
+        this.Opstina = opstina;
     }
 
     public String getIme() {
@@ -65,6 +80,7 @@ public class User {
     public void setTelefon(String telefon) {
         Telefon = telefon;
     }
+
 
     public String getEmail() {
         return Email;
@@ -168,5 +184,21 @@ public class User {
 
     public void setFirmaLogo(String firmaLogo) {
         FirmaLogo = firmaLogo;
+    }
+
+    public String getOpstina() {
+        return Opstina;
+    }
+
+    public void setOpstina(String opstina) {
+        Opstina = opstina;
+    }
+
+    public ArrayList<String> getOpstiniDostavuvac() {
+        return OpstiniDostavuvac;
+    }
+
+    public void setOpstiniDostavuvac(ArrayList<String> opstiniDostavuvac) {
+        OpstiniDostavuvac = opstiniDostavuvac;
     }
 }

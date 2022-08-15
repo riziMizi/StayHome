@@ -18,7 +18,20 @@
     </string-array>
 
     <string-array name="nizaNaracki">
-        <item>За потврда</item>
-        <item>Активни</item>
+        <item>Нарачки за правење</item>
+        <item>Готови нарачки</item>
+    </string-array>
+
+    <string-array name="nizaOpstini">
+        <item>Аеродром</item>
+        <item>Бутел</item>
+        <item>Гази Баба</item>
+        <item>Ѓорче Петров</item>
+        <item>Карпош</item>
+        <item>Кисела Вода</item>
+        <item>Сарај</item>
+        <item>Центар</item>
+        <item>Чаир</item>
+        <item>Шуто Оризари</item>
     </string-array>
 </resources>

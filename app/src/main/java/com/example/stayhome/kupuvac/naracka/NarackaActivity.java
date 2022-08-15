@@ -52,6 +52,8 @@ public class NarackaActivity extends AppCompatActivity {
     private String Naracka;
 
     private String FirmaId = "";
+    private String ImeFirma = "";
+    private String Opstina = "";
 
     private static final int REQ_CODE = 123;
 
@@ -89,6 +91,7 @@ public class NarackaActivity extends AppCompatActivity {
         editZabeleska.setVisibility(View.INVISIBLE);
 
         ProveriTipKorisnik();
+        NajdiImeNaFirma(FirmaId);
         PostaviNaracka();
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
@@ -223,7 +226,7 @@ public class NarackaActivity extends AppCompatActivity {
         }
 
 
-        com.example.stayhome.classes.Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum);
+        com.example.stayhome.classes.Naracka naracka = new Naracka(Adresa, Iznos, FirmaId, Zabeleska, Log, Lat, "За потврда", "", uid, Naracka, Datum, ImeFirma, Opstina, "", "", "", 0);
         if(IznosSoPopust > 0) {
             naracka.setCena(IznosSoPopust);
         }
@@ -255,6 +258,23 @@ public class NarackaActivity extends AppCompatActivity {
                     ZnameTipKorisnik = 1;
                 }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void NajdiImeNaFirma(String FirmaId) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(FirmaId);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                ImeFirma = user.getIme();
+                Opstina = user.getOpstina();
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(NarackaActivity.this, "Настана некоја грешка!!", Toast.LENGTH_SHORT).show();

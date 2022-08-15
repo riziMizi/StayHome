@@ -14,7 +14,7 @@
         android:background="@color/white">
 
         <TextView
-            android:id="@+id/rw4txtImeFirma"
+            android:id="@+id/rw7ImeFirma"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:layout_constraintTop_toTopOf="parent"
@@ -25,95 +25,128 @@
             android:textSize="25dp"/>
 
         <TextView
-            android:id="@+id/rw4txtPotvrdi"
+            android:id="@+id/rw7txtDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:drawableTop="@drawable/ic_delete" />
+
+        <TextView
+            android:id="@+id/rw7txtNaracka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7ImeFirma"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtZabeleska"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtNaracka"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtIznos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtZabeleska"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtDatum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtIznos"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtImeKupuvac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtDatum"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtAdresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtImeKupuvac"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtTelefon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtAdresa"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtVremeDostava"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtTelefon"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/rw7txtStatusPotvrda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtTelefon"
+            card_view:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
-            android:text="Потврди"
-            android:textStyle="bold"
             android:textSize="15dp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue"
+            android:textStyle="bold"/>
 
 
         <TextView
-            android:id="@+id/rw4txtNaracka"
+            android:id="@+id/rw7txtStatusNaracka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtImeFirma"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/rw7txtVremeDostava"
+            card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
             android:textSize="15dp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/rw4txtZabeleska"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtNaracka"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
-
-        <TextView
-            android:id="@+id/rw4txtIznos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtZabeleska"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
-
-        <TextView
-            android:id="@+id/rw4txtPotvrdenaNaracka"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtIznos"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
-
-        <TextView
-            android:id="@+id/rw4txtDatum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtPotvrdenaNaracka"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
-
-        <TextView
-            android:id="@+id/rw4txtDostavuvacIme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtDatum"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
-
-        <TextView
-            android:id="@+id/rw4txtDostavuvacTelefon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@+id/rw4txtDostavuvacIme"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/blue"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

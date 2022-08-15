@@ -80,7 +80,7 @@
         app:layout_constraintLeft_toRightOf="@+id/editTextKupuvacEmail"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:drawableTop="@drawable/ic_not_verified"
+        android:drawableTop="@drawable/ic_error"
         android:text="Not verified!"
         android:textColor="@color/red"
         android:clickable="true"

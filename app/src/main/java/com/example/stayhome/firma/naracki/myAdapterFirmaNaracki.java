@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.text.Html;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,8 +44,8 @@ public class myAdapterFirmaNaracki extends RecyclerView.Adapter<myAdapterFirmaNa
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtImeKupuvac, txtNaracka, txtIznos, txtAdresa,
-                txtDatum, txtZabeleska, txtTelefon, txtStatusNaracka, txtVremeDostava;
+        public TextView txtImeKupuvac, txtNaracka, txtIznos,
+                txtDatum, txtZabeleska, txtTelefonDostavuvac, txtImeDostavuvac, txtStatusNapravena;
 
 
         public ViewHolder(View itemView) {
@@ -51,12 +53,14 @@ public class myAdapterFirmaNaracki extends RecyclerView.Adapter<myAdapterFirmaNa
             txtImeKupuvac = (TextView)itemView.findViewById(R.id.rw5txtImeKupuvac);
             txtNaracka = (TextView) itemView.findViewById(R.id.rw5txtNaracka);
             txtIznos = (TextView) itemView.findViewById(R.id.rw5txtIznos);
-            txtAdresa = (TextView) itemView.findViewById(R.id.rw5txtAdresa);
             txtDatum = (TextView) itemView.findViewById(R.id.rw5txtDatum);
             txtZabeleska = (TextView) itemView.findViewById(R.id.rw5txtZabeleska);
-            txtTelefon = (TextView) itemView.findViewById(R.id.rw5txtTelefon);
-            txtStatusNaracka = (TextView) itemView.findViewById(R.id.rw5txtStatusNaracka);
-            txtVremeDostava = (TextView) itemView.findViewById(R.id.rw5txtVremeDostava);
+            txtTelefonDostavuvac = (TextView) itemView.findViewById(R.id.rw5txtTelefonDostavuvac);
+            txtImeDostavuvac = (TextView) itemView.findViewById(R.id.rw5txtImeDostavuvac);
+            txtStatusNapravena = (TextView) itemView.findViewById(R.id.rw5txtStatusNapravena);
+
+            txtStatusNapravena.setPaintFlags(txtStatusNapravena.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            txtStatusNapravena.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -82,7 +86,6 @@ public class myAdapterFirmaNaracki extends RecyclerView.Adapter<myAdapterFirmaNa
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 viewHolder.txtImeKupuvac.setText(user.getIme());
-                viewHolder.txtTelefon.setText("Телефон за контакт: " + user.getTelefon());
             }
 
             @Override
@@ -98,110 +101,54 @@ public class myAdapterFirmaNaracki extends RecyclerView.Adapter<myAdapterFirmaNa
         } else {
             viewHolder.txtZabeleska.setText("Забелешка: " + naracka.getZabeleska());
         }
-        viewHolder.txtAdresa.setText("Адреса за достава: " + naracka.getAdresa());
 
-        viewHolder.txtAdresa.setPaintFlags(viewHolder.txtAdresa.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        viewHolder.txtImeDostavuvac.setText("Име на доставувач: " + naracka.getDostavuvacIme());
+        viewHolder.txtTelefonDostavuvac.setText("Телефон за контакт: " + naracka.getDostavuvacTelefon());
 
-
-        if(naracka.getPrifatenaNaracka().equals("За потврда")) {
-            viewHolder.txtStatusNaracka.setText("Прифати");
+        if(naracka.getNapravena() == 0) {
+            viewHolder.txtStatusNapravena.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.txtStatusNaracka.setText("Доставено");
-            viewHolder.txtVremeDostava.setText("Време за достава: " + naracka.getVremeDostava() + " мин.");
+            viewHolder.txtStatusNapravena.setVisibility(View.INVISIBLE);
         }
-        viewHolder.txtStatusNaracka.setPaintFlags(viewHolder.txtStatusNaracka.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        viewHolder.txtAdresa.setOnClickListener(new View.OnClickListener() {
+        viewHolder.txtStatusNapravena.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ShowGoogleMapActivity.class);
-                intent.putExtra("lat", naracka.getLatitude());
-                intent.putExtra("lon", naracka.getLongitude());
-                v.getContext().startActivity(intent);
-            }
-        });
+            public void onClick(View view) {
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-        viewHolder.txtStatusNaracka.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(viewHolder.txtStatusNaracka.getText().equals("Прифати")) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                builder.setTitle("Готова нарачка");
+                builder.setMessage("Дали сте сигурни дека оваа нарачка е готова?");
 
-                    alert.setTitle("Потврди нарачка");
+                builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
 
-                    LinearLayout layout = new LinearLayout(mContext);
-                    layout.setOrientation(LinearLayout.VERTICAL);
-
-                    final EditText minuti = new EditText(mContext);
-                    minuti.setHint("Внесете минути за достава");
-                    layout.addView(minuti);
-
-                    alert.setView(layout);
-
-                    alert.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Поднеси</font>"), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            if(minuti.getText().toString().equals("")){
-                                Toast.makeText(mContext, "При прифаќање на нарачката мора да се внесе време за достава!", Toast.LENGTH_SHORT).show();
-                            } else {
-
-                                Map<String, Object> map = new HashMap();
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
-                                map.put(naracka.getNarackaId() + "/vremeDostava", minuti.getText().toString().trim());
-                                map.put(naracka.getNarackaId() + "/prifatenaNaracka", "Активни");
-                                databaseReference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(mContext, "Успешно прифатена нарачка!!", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                    public void onClick(DialogInterface dialog, int which) {
+                        Map<String, Object> map = new HashMap();
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
+                        map.put(naracka.getNarackaId() + "/napravena", 1);
+                        databaseReference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(mContext, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                                }
                             }
+                        });
+                        dialog.dismiss();
+                    }
+                });
 
-                            dialog.dismiss();
-                        }
-                    });
+                builder.setNegativeButton(Html.fromHtml("<font color='#FFFFFF'>Не</font>"), new DialogInterface.OnClickListener() {
 
-                    alert.setNegativeButton(Html.fromHtml("<font color='#FFFFFF'>Исклучи</font>"), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
-                    builder.setTitle("Доставена нарачка");
-                    builder.setMessage("Дали сте сигурни дека оваа нарачка е успешно доставена?");
-
-                    builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int which) {
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("AktivniNaracki").child(naracka.getNarackaId());
-                            databaseReference.removeValue();
-                            dialog.dismiss();
-                        }
-                    });
-
-                    builder.setNegativeButton(Html.fromHtml("<font color='#FFFFFF'>Не</font>"), new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-
-                }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
-
-
 
     }
 

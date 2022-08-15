@@ -16,9 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
+            android:name=".dostavuvac.NarackiDostavaActivity"
+            android:exported="false"
+            android:parentActivityName=".dostavuvac.DostavuvacActivity"/>
+        <activity
+            android:name=".dostavuvac.OpstiniDostavaActivity"
+            android:exported="false"
+            android:parentActivityName=".dostavuvac.DostavuvacActivity" />
+        <activity
+            android:name=".dostavuvac.DostavuvacActivity"
+            android:exported="false" />
+        <activity
             android:name=".kupuvac.KupuvacProfilActivity"
             android:exported="false"
-            android:parentActivityName=".kupuvac.KupuvacActivity"/>
+            android:parentActivityName=".kupuvac.KupuvacActivity" />
         <activity
             android:name=".firma.ProfilFirmaActivity"
             android:exported="false"
@@ -85,7 +96,8 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

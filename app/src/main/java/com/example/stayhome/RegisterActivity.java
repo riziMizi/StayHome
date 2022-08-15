@@ -30,14 +30,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private Spinner spinnerTipFirma, spinnerRabotnoVreme;
+    private Spinner spinnerTipFirma, spinnerRabotnoVreme, spinnerOsptini;
     private EditText editIme, editTelefon, editEmail, editPassword, editPassword2;
     private RadioGroup radioGroup;
-    private TextView txtSaatOd, txtSaatDo, txtRabotnoVreme;
+    private TextView txtSaatOd, txtSaatDo, txtRabotnoVreme, txtOpstini;
     private ProgressBar progressBar;
 
     private int saat, minuti;
@@ -56,17 +59,21 @@ public class RegisterActivity extends AppCompatActivity {
         txtRabotnoVreme = (TextView) findViewById(R.id.txtRabotnoVreme);
         txtSaatOd = (TextView) findViewById(R.id.txtSaatOd);
         txtSaatDo = (TextView) findViewById(R.id.txtSaatDo);
+        txtOpstini = (TextView) findViewById(R.id.txtOpstina);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupTip);
 
         spinnerTipFirma = (Spinner) findViewById(R.id.spinnerTipFirma);
         spinnerRabotnoVreme = (Spinner) findViewById(R.id.spinnerRabotniDenovi);
+        spinnerOsptini = (Spinner) findViewById(R.id.spinnerOpstini);
 
         spinnerTipFirma.setVisibility(View.INVISIBLE);
         spinnerRabotnoVreme.setVisibility(View.INVISIBLE);
+        spinnerOsptini.setVisibility(View.INVISIBLE);
         txtRabotnoVreme.setVisibility(View.INVISIBLE);
         txtSaatOd.setVisibility(View.INVISIBLE);
         txtSaatDo.setVisibility(View.INVISIBLE);
+        txtOpstini.setVisibility(View.INVISIBLE);
 
         progressBar = findViewById(R.id.progressBarRegister);
         progressBar.setVisibility(View.INVISIBLE);
@@ -80,16 +87,20 @@ public class RegisterActivity extends AppCompatActivity {
         if(R.id.radioFirma == ID) {
             spinnerTipFirma.setVisibility(View.VISIBLE);
             spinnerRabotnoVreme.setVisibility(View.VISIBLE);
+            spinnerOsptini.setVisibility(View.VISIBLE);
             txtRabotnoVreme.setVisibility(View.VISIBLE);
             txtSaatOd.setVisibility(View.VISIBLE);
             txtSaatDo.setVisibility(View.VISIBLE);
+            txtOpstini.setVisibility(View.VISIBLE);
             editIme.setHint("Име на фирмата");
         } else {
             spinnerTipFirma.setVisibility(View.INVISIBLE);
             spinnerRabotnoVreme.setVisibility(View.INVISIBLE);
+            spinnerOsptini.setVisibility(View.INVISIBLE);
             txtRabotnoVreme.setVisibility(View.INVISIBLE);
             txtSaatOd.setVisibility(View.INVISIBLE);
             txtSaatDo.setVisibility(View.INVISIBLE);
+            txtOpstini.setVisibility(View.INVISIBLE);
             editIme.setHint("Име и презиме");
         }
 
@@ -104,17 +115,15 @@ public class RegisterActivity extends AppCompatActivity {
         String Password = editPassword.getText().toString().trim();
         String Password2 = editPassword2.getText().toString().trim();
         String TipFirma = spinnerTipFirma.getSelectedItem().toString();
+        String Opstina = spinnerOsptini.getSelectedItem().toString();
         String RabotniDenovi = spinnerRabotnoVreme.getSelectedItem().toString();
         String VremeOd = txtSaatOd.getText().toString().trim();
         String VremeDo = txtSaatDo.getText().toString().trim();
         String TipUser = "Kupuvac";
 
-        int ZnameDaliFirma = 0;
-
         int ID = radioGroup.getCheckedRadioButtonId();
 
         if(R.id.radioFirma == ID) {
-            ZnameDaliFirma = 1;
             TipUser = "Firma";
 
             if(VremeOd.equals("")) {
@@ -132,6 +141,8 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 txtSaatDo.setError(null);
             }
+        } else if(R.id.radioDostavuvac == ID) {
+            TipUser = "Dostavuvac";
         }
 
 
@@ -189,7 +200,6 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        int finalZnameDaliFirma = ZnameDaliFirma;
         String finalTipUser = TipUser;
         progressBar.setVisibility(View.VISIBLE);
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -212,10 +222,13 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     User user;
-                    if(finalZnameDaliFirma == 1) {
-                        user = new User(Ime, Telefon,"", Email, finalTipUser, TipFirma, 0, 0, 0, 0, RabotniDenovi, VremeOd, VremeDo, "");
-                    } else {
+                    if(finalTipUser.equals("Firma")) {
+                        user = new User(Ime, Telefon,"", Email, finalTipUser, TipFirma, 0, 0, 0, 0, RabotniDenovi, VremeOd, VremeDo, "", Opstina);
+                    } else if(finalTipUser.equals("Kupuvac")){
                         user = new User(Ime, Telefon, Email, finalTipUser);
+                    } else {
+                        ArrayList<String> lista = new ArrayList<String>();
+                        user = new User(Ime, Telefon, Email, finalTipUser, lista);
                     }
 
                     FirebaseDatabase.getInstance().getReference("Users")
@@ -234,7 +247,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Неуспешна регистрација.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Постои корисник со оваа е-маил адреса!", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             }

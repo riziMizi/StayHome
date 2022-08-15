@@ -90,6 +90,9 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String UID = user.getUid();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,7 +244,6 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
 
     public void IspratiMeni(View view) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Испрати мени");
@@ -254,6 +256,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
                     Toast.makeText(FirmaMeniActivity.this, "Немате ниту еден артикл во менито!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 for(Meni meni : listaIspratiMeni) {
                     StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(meni.getSlikaUri()));
                     fileRef.putFile(meni.getSlikaUri()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -264,7 +267,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Meni meni1 = new Meni(meni.getArtikl(), meni.getSostavArtikl(), meni.getCena(), meni.getSlika());
                                     FirebaseDatabase.getInstance().getReference("Meni")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(UUID.randomUUID().toString()).
+                                            .child(UID).child(UUID.randomUUID().toString()).
                                             setValue(meni1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -274,19 +277,12 @@ public class FirmaMeniActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-                                    progressBar.setVisibility(View.INVISIBLE);
                                 }
                             });
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            progressBar.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(FirmaMeniActivity.this, "Настана некоја грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -324,11 +320,9 @@ public class FirmaMeniActivity extends AppCompatActivity {
     }
 
     private void ProveriMeni() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
-        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(UID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User korisnik = snapshot.getValue(User.class);
@@ -369,7 +363,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Map<String, Object> map = new HashMap();
                 DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Users");
-                map.put(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/odobrenoOdAdmin", 0);
+                map.put(UID + "/odobrenoOdAdmin", 0);
                 firebaseDatabase.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -404,10 +398,12 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
     private void NapraviListaMeni() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                .child(UID);
+        progressBar.setVisibility(View.VISIBLE);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressBar.setVisibility(View.INVISIBLE);
                 listaMeni.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Meni meni = dataSnapshot.getValue(Meni.class);

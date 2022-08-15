@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.stayhome.admin.AdminActivity;
 import com.example.stayhome.classes.User;
+import com.example.stayhome.dostavuvac.DostavuvacActivity;
 import com.example.stayhome.firma.FirmaActivity;
 import com.example.stayhome.kupuvac.KupuvacActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intentFirma = new Intent(this, FirmaActivity.class);
         Intent intentKupuvac = new Intent(this, KupuvacActivity.class);
         Intent intentAdmin = new Intent(this, AdminActivity.class);
+        Intent intentDostavuvac = new Intent(this, DostavuvacActivity.class);
 
         if(Email.equals("")) {
             editEmail.setError("Задолжително поле!");
@@ -150,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                                 } else if(tip.equals("Admin")) {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     startActivity(intentAdmin);
+                                } else if(tip.equals("Dostavuvac")) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    startActivity(intentDostavuvac);
                                 }
                             }
                         }
@@ -193,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Настана некоја грешка!!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Оваа е-маил адреса не постои!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 

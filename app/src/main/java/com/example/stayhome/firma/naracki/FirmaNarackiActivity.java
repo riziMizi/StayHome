@@ -130,14 +130,20 @@ public class FirmaNarackiActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 if(snapshot.exists()) {
-                    String status = spinner.getSelectedItem().toString();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Naracka naracka = dataSnapshot.getValue(Naracka.class);
-                        if(naracka.getFirmaId().equals(uid)) {
-                            if(naracka.getPrifatenaNaracka().equals(status)) {
+                        if(naracka.getFirmaId().equals(uid) && naracka.getPrifatenaNaracka().equals("Прифатена")) {
                                 naracka.setNarackaId(dataSnapshot.getKey());
-                                list.add(naracka);
-                            }
+                                String StatusNaracka = spinner.getSelectedItem().toString();
+                                if(StatusNaracka.equals("Готови нарачки")) {
+                                    if(naracka.getNapravena() == 1) {
+                                        list.add(naracka);
+                                    }
+                                } else if(StatusNaracka.equals("Нарачки за правење")) {
+                                    if(naracka.getNapravena() == 0) {
+                                        list.add(naracka);
+                                    }
+                                }
                         }
                     }
                 }

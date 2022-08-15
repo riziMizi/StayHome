@@ -1,4 +1,4 @@
-package com.example.stayhome.kupuvac;
+package com.example.stayhome.dostavuvac;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.example.stayhome.MainActivity;
 import com.example.stayhome.R;
 import com.example.stayhome.classes.Naracka;
-import com.example.stayhome.kupuvac.naracka.myAdapterKupuvacNaracki;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,19 +32,20 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KupuvacAktivniNaracki extends AppCompatActivity {
+public class NarackiDostavaActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private myAdapterKupuvacNaracki mAdapter;
+    private myAdapterDostavaNaracki mAdapter;
 
     private List<Naracka> list = new ArrayList<>();
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String uid = user.getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kupuvac_aktivni_naracki);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        setContentView(R.layout.activity_naracki_dostava);
 
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
         ActionBar actionBar = getSupportActionBar();
@@ -55,10 +55,10 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
         NapraviLista();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.listKupuvacAktivniNaracki);
+        mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdeniNarackiZaDostava);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new myAdapterKupuvacNaracki(list, R.layout.adapter_kupuvac_naracki, this);
+        mAdapter = new myAdapterDostavaNaracki(list, R.layout.adapter_dostava_naracki, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -83,7 +83,7 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(KupuvacAktivniNaracki.this, MainActivity.class));
+                        startActivity(new Intent(NarackiDostavaActivity.this, MainActivity.class));
                         dialog.dismiss();
                     }
                 });
@@ -104,9 +104,6 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
     private void NapraviLista() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AktivniNaracki");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -114,10 +111,10 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
                 if(snapshot.exists()) {
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Naracka naracka = dataSnapshot.getValue(Naracka.class);
-                        if(naracka.getKupuvacId().equals(uid) && !naracka.getPrifatenaNaracka().equals("Откажана")) {
-                            naracka.setNarackaId(dataSnapshot.getKey());
-                            list.add(naracka);
-                        }
+                            if(naracka.getDostavuvacId().equals(uid)) {
+                                naracka.setNarackaId(dataSnapshot.getKey());
+                                list.add(naracka);
+                            }
                     }
                 }
                 mAdapter.notifyDataSetChanged();
@@ -125,7 +122,7 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(KupuvacAktivniNaracki.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NarackiDostavaActivity.this, "Настана грешка.Обидете се повторно!", Toast.LENGTH_SHORT).show();
             }
         });
     }
