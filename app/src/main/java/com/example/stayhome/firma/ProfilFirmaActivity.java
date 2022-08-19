@@ -70,7 +70,7 @@ public class ProfilFirmaActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private EditText editTextFirmaEmail, editTextFirmaTelefon, editTextFirmaTelefon2;
-    private TextView txtChooseImage, txtSaveEdit, txtVerify, txtVerified;
+    private TextView txtChooseImage, txtSaveEdit, txtVerify, txtVerified, txtNema;
 
     private ImageView imageViewFirmaLogo;
 
@@ -106,6 +106,8 @@ public class ProfilFirmaActivity extends AppCompatActivity {
         txtVerify = findViewById(R.id.txtNotVerified);
         txtVerify.setEnabled(false);
         txtVerified = findViewById(R.id.txtVerified);
+
+        txtNema = findViewById(R.id.txtNemaKomentariFirma);
 
 
         editTextFirmaEmail.setEnabled(false);
@@ -182,6 +184,12 @@ public class ProfilFirmaActivity extends AppCompatActivity {
                             list.add(komentar);
                         }
                     }
+                }
+
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Нема коментари!");
                 }
                 mAdapter.notifyDataSetChanged();
             }

@@ -39,7 +39,6 @@
         app:layout_constraintTop_toTopOf="@+id/buttonVasiNaracki"
         app:layout_constraintLeft_toRightOf="@+id/buttonVasiNaracki"
         android:layout_marginLeft="23dp"
-        android:text="@string/popustNaracka"
         android:textColor="@color/red"
         android:textSize="13dp" />
 

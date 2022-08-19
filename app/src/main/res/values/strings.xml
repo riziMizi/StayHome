@@ -3,8 +3,6 @@
     <string name="prvaNajavaFirma">Добредојдовте на StayHome апликацијата.
     Ве молиме внесето го вашето мени и чекајте потврда од админот. Ви благодариме на довербата.</string>
 
-    <string name="popustNaracka">Со секоја нарачка над 1000 \n денари имате попуст од 15%.</string>
-
     <string-array name="nizaTipFirma">
         <item>Ресторан</item>
         <item>Lounge bar</item>

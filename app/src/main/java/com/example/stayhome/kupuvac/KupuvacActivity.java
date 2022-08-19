@@ -57,7 +57,6 @@ public class KupuvacActivity extends AppCompatActivity {
 
 
         txtViewPopust = (TextView) findViewById(R.id.txtPopust);
-        txtViewPopust.setVisibility(View.INVISIBLE);
 
         ProveriTipKorisnik();
         NapraviLista();
@@ -167,7 +166,7 @@ public class KupuvacActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User korisnik = snapshot.getValue(User.class);
                 if(korisnik.getTipUser().equals("Firma")) {
-                    txtViewPopust.setVisibility(View.VISIBLE);
+                    txtViewPopust.setText("Со секоја нарачка над 1000 \n денари имате попуст од 15%.");
                     ActionBar actionBar = getSupportActionBar();
                     if (actionBar != null) {
                         actionBar.setDisplayHomeAsUpEnabled(true);

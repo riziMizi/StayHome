@@ -89,6 +89,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
     private Uri imageUri;
 
     private ProgressBar progressBar;
+    int flagProgresBar = 0;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String UID = user.getUid();
@@ -107,7 +108,6 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
 
         progressBar = findViewById(R.id.progressBarPredlogMeni);
-        progressBar.setVisibility(View.INVISIBLE);
 
         imageView = findViewById(R.id.imageViewPredlogMeni);
 
@@ -397,20 +397,23 @@ public class FirmaMeniActivity extends AppCompatActivity {
 
 
     private void NapraviListaMeni() {
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meni")
                 .child(UID);
-        progressBar.setVisibility(View.VISIBLE);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                progressBar.setVisibility(View.INVISIBLE);
+
                 listaMeni.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Meni meni = dataSnapshot.getValue(Meni.class);
                     meni.setArtiklId(dataSnapshot.getKey());
                     listaMeni.add(meni);
                 }
+
                 mAdapterMeni.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override

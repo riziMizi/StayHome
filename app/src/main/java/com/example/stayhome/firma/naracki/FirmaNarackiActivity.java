@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -39,6 +40,7 @@ public class FirmaNarackiActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterFirmaNaracki mAdapter;
+    private TextView txtNema;
 
     private List<Naracka> list = new ArrayList<>();
 
@@ -60,6 +62,10 @@ public class FirmaNarackiActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinnerNaracki);
 
         NapraviLista();
+
+        txtNema = findViewById(R.id.txtNemaFirmaNaracki);
+
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listFirmaNaracki);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -146,6 +152,11 @@ public class FirmaNarackiActivity extends AppCompatActivity {
                                 }
                         }
                     }
+                }
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Немате нарачки!");
                 }
                 mAdapter.notifyDataSetChanged();
             }

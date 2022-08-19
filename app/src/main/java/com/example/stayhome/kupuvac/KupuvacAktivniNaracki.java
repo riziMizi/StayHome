@@ -16,6 +16,8 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -38,6 +40,8 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private myAdapterKupuvacNaracki mAdapter;
 
+    private TextView txtNema;
+
     private List<Naracka> list = new ArrayList<>();
 
     @Override
@@ -54,6 +58,8 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
         }
 
         NapraviLista();
+
+        txtNema = findViewById(R.id.txtNemaKupuvacNaracki);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listKupuvacAktivniNaracki);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -119,6 +125,11 @@ public class KupuvacAktivniNaracki extends AppCompatActivity {
                             list.add(naracka);
                         }
                     }
+                }
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Немате нарачка!");
                 }
                 mAdapter.notifyDataSetChanged();
             }

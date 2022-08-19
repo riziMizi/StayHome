@@ -112,7 +112,10 @@ public class FirmaActivity extends AppCompatActivity {
                 if(korisnik.getOdobrenoOdAdmin() == 1) {
                     buttonNaracki.setVisibility(View.VISIBLE);
                     buttonNaracaj.setVisibility(View.VISIBLE);
-                    txtPrvaNajava.setVisibility(View.INVISIBLE);
+                    txtPrvaNajava.setText("");
+                } else {
+                    String text = getResources().getString(R.string.prvaNajavaFirma);
+                    txtPrvaNajava.setText(text);
                 }
             }
 

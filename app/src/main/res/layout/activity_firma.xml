@@ -42,7 +42,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="@string/prvaNajavaFirma"
         android:textColor="@color/blue"
         android:textSize="15dp"/>
 

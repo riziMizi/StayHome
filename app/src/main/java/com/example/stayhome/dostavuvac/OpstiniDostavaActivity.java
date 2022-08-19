@@ -110,34 +110,34 @@ public class OpstiniDostavaActivity extends AppCompatActivity {
         LinkedList<String> lista = new LinkedList<>();
 
         if(checkBoxAerodrom.isChecked()) {
-            lista.add("Aerodrom");
+            lista.add("Аеродром");
         }
         if(checkBoxButel.isChecked()) {
-            lista.add("Butel");
+            lista.add("Бутел");
         }
         if(checkBoxGaziBaba.isChecked()) {
-            lista.add("GaziBaba");
+            lista.add("Гази Баба");
         }
         if(checkBoxGorcePetrov.isChecked()) {
-            lista.add("GorcePetrov");
+            lista.add("Ѓорче Петров");
         }
         if(checkBoxKarpos.isChecked()) {
-            lista.add("Karpos");
+            lista.add("Карпош");
         }
         if(checkBoxKiselaVoda.isChecked()) {
-            lista.add("KiselaVoda");
+            lista.add("Кисела Вода");
         }
         if(checkBoxSaraj.isChecked()) {
-            lista.add("Saraj");
+            lista.add("Сарај");
         }
         if(checkBoxCentar.isChecked()) {
-            lista.add("Centar");
+            lista.add("Центар");
         }
         if(checkBoxCair.isChecked()) {
-            lista.add("Cair");
+            lista.add("Чаир");
         }
         if(checkBoxSutoOrizari.isChecked()) {
-            lista.add("SutoOrizari");
+            lista.add("Шуто Оризари");
         }
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
@@ -164,34 +164,34 @@ public class OpstiniDostavaActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 ArrayList<String> list = user.getOpstiniDostavuvac();
                 if(list != null) {
-                    if(list.contains("Aerodrom")) {
+                    if(list.contains("Аеродром")) {
                         checkBoxAerodrom.setChecked(true);
                     }
-                    if(list.contains("Butel")) {
+                    if(list.contains("Бутел")) {
                         checkBoxButel.setChecked(true);
                     }
-                    if(list.contains("GaziBaba")) {
+                    if(list.contains("Гази Баба")) {
                         checkBoxGaziBaba.setChecked(true);
                     }
-                    if(list.contains("GorcePetrov")) {
+                    if(list.contains("Ѓорче Петров")) {
                         checkBoxGorcePetrov.setChecked(true);
                     }
-                    if(list.contains("Karpos")) {
+                    if(list.contains("Карпош")) {
                         checkBoxKarpos.setChecked(true);
                     }
-                    if(list.contains("KiselaVoda")) {
+                    if(list.contains("Кисела Вода")) {
                         checkBoxKiselaVoda.setChecked(true);
                     }
-                    if(list.contains("Saraj")) {
+                    if(list.contains("Сарај")) {
                         checkBoxSaraj.setChecked(true);
                     }
-                    if(list.contains("Centar")) {
+                    if(list.contains("Центар")) {
                         checkBoxCentar.setChecked(true);
                     }
-                    if(list.contains("Cair")) {
+                    if(list.contains("Чаир")) {
                         checkBoxCair.setChecked(true);
                     }
-                    if(list.contains("SutoOrizari")) {
+                    if(list.contains("Шуто Оризари")) {
                         checkBoxSutoOrizari.setChecked(true);
                     }
                 }

@@ -16,6 +16,8 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -36,6 +38,7 @@ public class NarackiDostavaActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterDostavaNaracki mAdapter;
+    private TextView txtNema;
 
     private List<Naracka> list = new ArrayList<>();
 
@@ -54,6 +57,8 @@ public class NarackiDostavaActivity extends AppCompatActivity {
         }
 
         NapraviLista();
+
+        txtNema = findViewById(R.id.txtNemaNarackiDostava);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdeniNarackiZaDostava);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -117,6 +122,14 @@ public class NarackiDostavaActivity extends AppCompatActivity {
                             }
                     }
                 }
+
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Немате нарачки за достава!");
+                }
+
+
                 mAdapter.notifyDataSetChanged();
             }
 

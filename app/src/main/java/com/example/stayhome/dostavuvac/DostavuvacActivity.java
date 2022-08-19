@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -47,6 +48,8 @@ public class DostavuvacActivity extends AppCompatActivity {
     private List<Naracka> list = new ArrayList<>();
     private ArrayList<String> listaOpstini = new ArrayList<>();
 
+    private TextView txtNema;
+
     FirebaseUser currentUser =FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -55,9 +58,10 @@ public class DostavuvacActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dostavuvac);
 
+        txtNema = findViewById(R.id.txtNemaNarackiDostavuvac);
+
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
         ZemiOpstini();
-        NapraviLista();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listNarackiDostava);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -127,12 +131,19 @@ public class DostavuvacActivity extends AppCompatActivity {
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Naracka naracka = dataSnapshot.getValue(Naracka.class);
                         if(listaOpstini != null) {
+                            System.out.println("EDEN" + String.valueOf(listaOpstini.size()));
                             if(listaOpstini.contains(naracka.getOpstina()) && naracka.getPrifatenaNaracka().equals("За потврда")) {
                                 naracka.setNarackaId(dataSnapshot.getKey());
                                 list.add(naracka);
                             }
                         }
                     }
+                }
+
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Нема нарачки за достава!");
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -145,13 +156,14 @@ public class DostavuvacActivity extends AppCompatActivity {
     }
 
     private void ZemiOpstini() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
 
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 listaOpstini = user.getOpstiniDostavuvac();
+                NapraviLista();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

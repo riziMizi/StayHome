@@ -50,7 +50,7 @@ public class KomentariActivity extends AppCompatActivity {
 
     private String FirmaId, FirmaIme;
 
-    private TextView txtImeFirma, txtKomentiraj;
+    private TextView txtImeFirma, txtKomentiraj, txtNema;
 
     String ImeKupuvac;
 
@@ -66,6 +66,8 @@ public class KomentariActivity extends AppCompatActivity {
         txtImeFirma = findViewById(R.id.txtKomentariNaslov);
         txtKomentiraj = findViewById(R.id.txtKomentiraj);
         txtImeFirma.setText(FirmaIme);
+
+        txtNema = findViewById(R.id.txtNemaKomentariKupuvac);
 
         txtKomentiraj.setPaintFlags(txtKomentiraj.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -91,7 +93,7 @@ public class KomentariActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(KomentariActivity.this);
 
-                alert.setTitle("Коментирај");
+                alert.setTitle("Коментар");
 
                 LinearLayout layout = new LinearLayout(KomentariActivity.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
@@ -102,7 +104,7 @@ public class KomentariActivity extends AppCompatActivity {
 
                 alert.setView(layout);
 
-                alert.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Поднеси</font>"), new DialogInterface.OnClickListener() {
+                alert.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Коментирај</font>"), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if(komentar.getText().toString().equals("")){
                             Toast.makeText(KomentariActivity.this, "Не внесовте никаков коментар!", Toast.LENGTH_SHORT).show();
@@ -190,6 +192,12 @@ public class KomentariActivity extends AppCompatActivity {
                             list.add(komentar);
                         }
                     }
+                }
+
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Нема коментари!");
                 }
                 mAdapter.notifyDataSetChanged();
             }

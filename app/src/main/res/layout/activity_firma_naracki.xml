@@ -45,6 +45,19 @@
         android:backgroundTint="@color/blue"
         />
 
+    <TextView
+        android:id="@+id/txtNemaFirmaNaracki"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/spinnerNaracki"
+        android:layout_marginTop="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:textColor="@color/blue"
+        android:textSize="20dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listFirmaNaracki"
         android:scrollbars="vertical"

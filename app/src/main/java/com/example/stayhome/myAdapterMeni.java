@@ -11,7 +11,9 @@ import android.content.pm.PackageManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +54,7 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
     private int rowLayout;
     private Context mContext;
     private User userFirma;
+    public ProgressBar progressBar;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,6 +74,8 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
             txtEditArtikl = (TextView) itemView.findViewById(R.id.rwEdit);
             txtSaveEdit = (TextView) itemView.findViewById(R.id.rwSaveEdit);
             imageView = (ImageView) itemView.findViewById(R.id.rwImageView);
+
+            progressBar = itemView.findViewById(R.id.progressBarPredlogMeni);
 
             editArtikl.setEnabled(false);
             editArtiklSostav.setEnabled(false);
@@ -92,11 +98,15 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(rowLayout, viewGroup, false);
+//        if(progressBar != null) {
+//            progressBar.setVisibility(View.GONE);
+//        }
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+
         Meni meni = myList.get(i);
 
         viewHolder.editArtikl.setText(meni.getArtikl());
@@ -116,6 +126,7 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
                 viewHolder.txtSaveEdit.setVisibility(View.VISIBLE);
             }
         });
+
 
         viewHolder.txtSaveEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +172,10 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
         viewHolder.txtDeleteArtikl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewHolder.editArtikl.setEnabled(false);
+                viewHolder.editArtiklSostav.setEnabled(false);
+                viewHolder.editArtiklCena.setEnabled(false);
+                viewHolder.txtSaveEdit.setVisibility(View.INVISIBLE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
                 builder.setTitle("Избриши артикл");
@@ -219,4 +234,5 @@ public class myAdapterMeni extends RecyclerView.Adapter<myAdapterMeni.ViewHolder
             }
         });
     }
+
 }

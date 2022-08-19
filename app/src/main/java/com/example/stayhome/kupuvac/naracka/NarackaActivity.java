@@ -44,7 +44,7 @@ import java.util.UUID;
 
 public class NarackaActivity extends AppCompatActivity {
 
-    private TextView txtIznosNaracka, txtNaracka, txtLokacija, txtIzberiLokacija, txtIznosNarackaSoPopust;
+    private TextView txtIznosNaracka, txtNaracka, txtLokacija, txtIzberiLokacija, txtIznosNarackaSoPopust, txtNema;
     private EditText editZabeleska;
     private Button buttonNaracaj;
 
@@ -82,6 +82,7 @@ public class NarackaActivity extends AppCompatActivity {
         txtLokacija = (TextView) findViewById(R.id.txtLokacija);
         txtIzberiLokacija = (TextView) findViewById(R.id.txtIzborLokacija);
         txtIznosNarackaSoPopust = (TextView) findViewById(R.id.txtIznosNarackaSoPopust);
+        txtNema = findViewById(R.id.txtNemaIzbranoArtikl);
 
         editZabeleska = (EditText) findViewById(R.id.editZabeleska);
 
@@ -185,10 +186,13 @@ public class NarackaActivity extends AppCompatActivity {
                     }
                 }
                 if(!txtNaracka.getText().toString().trim().equals("")) {
+                    txtNema.setText("");
                     buttonNaracaj.setVisibility(View.VISIBLE);
                     txtLokacija.setVisibility(View.VISIBLE);
                     txtIzberiLokacija.setVisibility(View.VISIBLE);
                     editZabeleska.setVisibility(View.VISIBLE);
+                } else {
+                    txtNema.setText("Немате селектирано артикл!");
                 }
             }
 

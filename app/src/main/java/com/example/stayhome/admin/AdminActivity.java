@@ -15,6 +15,8 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stayhome.MainActivity;
@@ -34,6 +36,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private myAdapterAdmin mAdapter;
+    private TextView txtNema;
 
     private List<User> list = new ArrayList<>();
 
@@ -45,6 +48,8 @@ public class AdminActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
 
         NapraviListaPotvrdaFirmi();
+
+        txtNema = findViewById(R.id.txtNemaFirmiZaPotvrda);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listPotvrdaFirma);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -110,6 +115,12 @@ public class AdminActivity extends AppCompatActivity {
                    if(user.getPostoiMeni() == 1 && user.getOdobrenoOdAdmin() == 0 && user.getTipUser().equals("Firma")) {
                        list.add(user);
                    }
+                }
+
+                if(list.size() > 0) {
+                    txtNema.setText("");
+                } else {
+                    txtNema.setText("Нема фирми за потврда!");
                 }
 
                 mAdapter.notifyDataSetChanged();
