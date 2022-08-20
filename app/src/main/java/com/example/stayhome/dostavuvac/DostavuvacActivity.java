@@ -86,7 +86,7 @@ public class DostavuvacActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_profile:
-                startActivity(new Intent(DostavuvacActivity.this, KupuvacProfilActivity.class));
+                startActivity(new Intent(DostavuvacActivity.this, DostavuvacProfilActivity.class));
                 return true;
             case R.id.action_signout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

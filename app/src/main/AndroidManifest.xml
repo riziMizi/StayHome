@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StayHome">
         <activity
-            android:name=".dostavuvac.NarackiDostavaActivity"
+            android:name=".dostavuvac.DostavuvacProfilActivity"
             android:exported="false"
             android:parentActivityName=".dostavuvac.DostavuvacActivity"/>
+        <activity
+            android:name=".dostavuvac.NarackiDostavaActivity"
+            android:exported="false"
+            android:parentActivityName=".dostavuvac.DostavuvacActivity" />
         <activity
             android:name=".dostavuvac.OpstiniDostavaActivity"
             android:exported="false"

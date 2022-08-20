@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dostavuvac.DostavuvacProfilActivity"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        app:title="@string/app_name"
+        android:backgroundTint="@color/blue"
+        app:titleTextColor="@color/white"
+        android:theme="@style/AppTheme.ActionBar"/>
+
+    <TextView
+        android:id="@+id/txtDostavuvacEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:drawableTop="@drawable/ic_edit"
+        android:clickable="true"
+        android:onClick="Edit" />
+
+    <TextView
+        android:id="@+id/txtDostavuvacSaveEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="20dp"
+        android:text="Зачувај"
+        android:textColor="@color/blue"
+        android:clickable="true"
+        android:onClick="SaveEdit"/>
+
+    <ImageView
+        android:id="@+id/imageViewDostavuvac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_account"/>
+
+    <EditText
+        android:id="@+id/editTextDostavuvacEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:background="#00000000"
+        android:drawableLeft="@drawable/ic_email_blue"
+        android:drawablePadding="10dp"
+        android:hint="Е-маил"
+        android:paddingLeft="10dp"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDostavuvac"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/txtDostavuvacNotVerified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDostavuvac"
+        app:layout_constraintLeft_toRightOf="@+id/editTextDostavuvacEmail"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:drawableTop="@drawable/ic_error"
+        android:text="Not verified!"
+        android:textColor="@color/red"
+        android:clickable="true"
+        android:onClick="VerifyEmail"/>
+
+    <TextView
+        android:id="@+id/txtDostavuvacVerified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDostavuvac"
+        app:layout_constraintLeft_toRightOf="@+id/editTextDostavuvacEmail"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:drawableTop="@drawable/ic_verified"
+        android:text="Verified!"
+        android:textColor="@color/green"/>
+
+    <EditText
+        android:id="@+id/editTextDostavuvacIme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext_blue"
+        android:drawableLeft="@drawable/ic_person_blue"
+        android:drawablePadding="10dp"
+        android:hint="Име и презиме"
+        android:paddingLeft="10dp"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDostavuvacEmail" />
+
+    <EditText
+        android:id="@+id/editTextDostavuvacTelefon"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext_blue"
+        android:drawableLeft="@drawable/ic_phone_blue"
+        android:drawablePadding="10dp"
+        android:hint="Телефонски број"
+        android:paddingLeft="10dp"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDostavuvacIme"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
