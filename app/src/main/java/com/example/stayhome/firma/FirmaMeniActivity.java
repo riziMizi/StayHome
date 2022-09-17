@@ -247,7 +247,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Испрати мени");
-        builder.setMessage("Дали сигурно сакате да го испратите менито до админот?");
+        builder.setMessage("Дали сигурно сакате да го испратите менито до администраторот?");
 
         builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
 
@@ -357,7 +357,7 @@ public class FirmaMeniActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Испрати мени");
-        builder.setMessage("Дали сигурно сакате да го испратите менито до админот?");
+        builder.setMessage("Дали сигурно сакате да го испратите менито до администраторот?");
 
         builder.setPositiveButton(Html.fromHtml("<font color='#FFFFFF'>Да</font>"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
